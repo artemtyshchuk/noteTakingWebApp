@@ -1,10 +1,11 @@
+import { Header } from "../components/Header/Header";
 import { Menu } from "../components/Menu/Menu";
 
 export const AllNotesPage = () => {
   return (
-    <>
+    <div style={{ display: "flex" }}>
       <Menu />
-      {/* <h1>All Notes</h1> */}
-    </>
+      <Header headerText="All Notes" />
+    </div>
   );
 };
