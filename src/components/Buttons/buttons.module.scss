@@ -30,5 +30,12 @@
 .icon {
   width: 20px;
   height: 20px;
-  color: #335cff;
+  filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
+    brightness(94%) contrast(94%);
+}
+
+.iconHover {
+  filter: invert(42%) sepia(57%) saturate(5740%) hue-rotate(216deg)
+    brightness(101%) contrast(94%);
+  transition: 0.4s;
 }
