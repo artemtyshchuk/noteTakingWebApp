@@ -6,7 +6,7 @@ interface HeaderProps {
   headerText: string;
 }
 
-export const Header = ({headerText}: HeaderProps) => {
+export const Header = ({ headerText }: HeaderProps) => {
   return (
     <div className={styles.header}>
       <div>
@@ -34,7 +34,7 @@ export const Header = ({headerText}: HeaderProps) => {
         </button>
       </div>
 
-      <span className={styles.horyzontalDivider} />
+      <span className={styles.horizontalDivider} />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import logo from "../../assets/images/logo.svg";
 import iconHome from "../../assets/images/icon-home.svg";
 import iconArchive from "../../assets/images/icon-archive.svg";
 import { TagButton } from "../../components/Buttons/TagButton";
+import { HorizontalDivider } from "../../components/Dividers/Dividers";
 
 export const Menu = () => {
   return (
@@ -14,16 +15,15 @@ export const Menu = () => {
       <div className={styles.buttonsContainer}>
         <RouteButton text="All Notes" icon={iconHome} />
         <RouteButton text="Archived Notes" icon={iconArchive} />
-        <span className={styles.horyzontalDivider} />
-
+        <HorizontalDivider margin="8px 0" />
         <p className={styles.menuText}>Tags</p>
 
         <TagButton text="Cooking" />
         <TagButton text="Dev" />
         <TagButton text="Fitness" />
         <TagButton text="Health" />
+        <TagButton text="Cooking" />
       </div>
-      <span className={styles.verticalDivider} />
     </div>
   );
 };
