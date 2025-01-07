@@ -16,14 +16,16 @@ export const RouteButton = observer(({ text, icon }: RouteButtonProps) => {
 
   return (
     <button
-      className={`${styles.button} ${
-        isHover ? styles.buttonHover : ""
-      }`}
+      className={`${styles.button} ${isHover ? styles.buttonHover : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <div className={styles.buttonContainer}>
-        <img className={styles.icon} src={icon} alt="icon" />
+        <img
+          className={`${styles.icon} ${isHover ? styles.iconHover : ""}`}
+          src={icon}
+          alt="icon"
+        />
         <p className={styles.routeButtonText}>{text}</p>
       </div>
       {isHover && <img src={arrowRight} alt="arrow" />}

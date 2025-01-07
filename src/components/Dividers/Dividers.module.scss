@@ -1,0 +1,15 @@
+.horizontalDivider {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: #e0e4ea;
+  box-sizing: border-box;
+}
+
+.verticalDivider {
+  position: absolute;
+  width: 1px;
+  background-color: #e0e4ea;
+  min-height: 100vh;
+  height: 100%;
+}

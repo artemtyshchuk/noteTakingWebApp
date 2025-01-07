@@ -20,7 +20,11 @@ export const TagButton = ({ text }: TagButtonProps) => {
       onMouseLeave={handleMouseLeave}
     >
       <div className={styles.buttonContainer}>
-        <img className={styles.icon} src={tagIcon} alt="tagIcon" />
+        <img
+          className={`${styles.icon} ${isHover ? styles.iconHover : ""}`}
+          src={tagIcon}
+          alt="icon"
+        />
         <p className={styles.routeButtonText}>{text}</p>
       </div>
       {isHover && <img src={arrowRight} alt="arrow" />}
