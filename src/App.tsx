@@ -1,9 +1,9 @@
-// import {
-//   SignedIn,
-//   SignedOut,
-//   SignInButton,
-//   UserButton,
-// } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 import { AllNotesPage } from "./pages/AllNotesPage";
 
@@ -12,12 +12,12 @@ function App() {
     <>
       <div>
         <AllNotesPage />
-        {/* <SignedOut>
+        <SignedOut>
           <SignInButton />
         </SignedOut>
         <SignedIn>
           <UserButton />
-        </SignedIn> */}
+        </SignedIn>
       </div>
     </>
   );

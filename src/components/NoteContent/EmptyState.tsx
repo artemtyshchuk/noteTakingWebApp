@@ -1,36 +1,88 @@
 import styles from "./NoteContent.module.scss";
-import tagIcon from "../../assets/images/icon-tag.svg";
-import clockIcon from "../../assets/images/icon-clock.svg";
-import { HorizontalDivider } from "../../components/Dividers/Dividers";
+import tagIcon from "assets/images/icon-tag.svg";
+import clockIcon from "assets/images/icon-clock.svg";
+import { HorizontalDivider } from "components/Dividers/Dividers";
 import React, { useState } from "react";
-import { Tag } from "../../components/Tag/Tag";
+import { Tag } from "components/Tag/Tag";
+import { stateStore } from "store/statesStore";
+import { notesStore } from "store/notesStore";
+import { NoteTypes } from "types/types";
+import { format } from "date-fns";
+import { addNoteToFirestore } from "utils/firebase";
+import { useUser } from "@clerk/clerk-react"; 
+
+const dateFormat = format(new Date(), "dd MMM yyyy");
 
 interface EmptyStateProps {}
 
 export const EmptyState = ({}: EmptyStateProps) => {
-  const [tags, setTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState("");
+  const { user } = useUser();
 
-  const handleTagSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const [newNote, setNewNote] = useState<NoteTypes>({
+    title: "",
+    tags: ["General"],
+    content: "",
+    lastEdited: dateFormat,
+    isArchived: false,
+  });
+
+  const [tagInput, setTagInput] = useState<string>("");
+
+  const handleNoteChange = (
+    field: keyof NoteTypes,
+    value: string[] | string | boolean
+  ) => {
+    setNewNote({ ...newNote, [field]: value });
+  };
+
+  // tags
+  const handleTagSubmit = (
+    event: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>
+  ) => {
+    event?.preventDefault();
+
     if (tagInput.trim()) {
-      setTags([...tags, tagInput.trim()]);
+      const updatedTag = [...newNote.tags, tagInput.trim()];
+      handleNoteChange("tags", updatedTag);
       setTagInput("");
     }
   };
 
-  const handleTagInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTagInput(event.target.value);
+  const handleDeleteTag = (tagToDelete: string) => {
+    const updatedTags = newNote.tags.filter((tag) => tag !== tagToDelete);
+    handleNoteChange("tags", updatedTags);
   };
 
-  const handleDeleteTag = (tagToDelete: string) => {
-    setTags(tags.filter((tag) => tag !== tagToDelete));
+  //save / cancel
+  const handleSaveNote = async () => {
+    notesStore.addNote(newNote);
+    await addNoteToFirestore(newNote, user?.id as string);
+    setNewNote({
+      title: "",
+      tags: [],
+      content: "",
+      lastEdited: dateFormat,
+      isArchived: false,
+    });
+    stateStore.setNoteContent("idle");
+  };
+
+  const handleCancelNote = () => {
+    setNewNote({
+      title: "",
+      tags: [],
+      content: "",
+      lastEdited: dateFormat,
+      isArchived: false,
+    });
+    stateStore.setNoteContent("idle");
   };
 
   return (
     <>
-      <label>
+      <label className={styles.titleInputContainer}>
         <input
+          onChange={(e) => handleNoteChange("title", e.target.value)}
           className={styles.titleInput}
           type="text"
           id="title"
@@ -42,8 +94,8 @@ export const EmptyState = ({}: EmptyStateProps) => {
       <label className={styles.tagInputContainer}>
         <img className={styles.contentIcon} src={tagIcon} alt="tagIcon" />
         <p className={styles.tagText}>Tags</p>
-        {tags.length > 0 &&
-          tags.map((tag, index) => (
+        {newNote.tags.length > 0 &&
+          newNote.tags.map((tag, index) => (
             <Tag
               key={index}
               tag={[tag]}
@@ -60,13 +112,14 @@ export const EmptyState = ({}: EmptyStateProps) => {
             name="tags"
             value={tagInput}
             maxLength={8}
-            disabled={tags.length >= 3}
+            disabled={newNote.tags.length >= 3}
             placeholder={
-              tags.length <= 2
+              newNote.tags.length <= 2
                 ? "Add tags separated by commas (e.g. Work, Planning)"
                 : "Maximum of 3 tags"
             }
-            onChange={handleTagInputChange}
+            onChange={(e) => setTagInput(e.target.value)}
+            onBlur={handleTagSubmit}
           />
         </form>
       </label>
@@ -84,13 +137,18 @@ export const EmptyState = ({}: EmptyStateProps) => {
         name="note-content"
         id="note-content"
         placeholder="Start typing your note here…"
+        onChange={(e) => handleNoteChange("content", e.target.value)}
       />
 
       <HorizontalDivider margin="16px 0" />
 
       <div className={styles.buttonsContainer}>
-        <button className={styles.saveButton}>Save Note</button>
-        <button className={styles.cancelButton}>Cancel</button>
+        <button className={styles.saveButton} onClick={handleSaveNote}>
+          Save Note
+        </button>
+        <button className={styles.cancelButton} onClick={handleCancelNote}>
+          Cancel
+        </button>
       </div>
     </>
   );

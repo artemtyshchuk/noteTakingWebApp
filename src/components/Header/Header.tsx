@@ -1,6 +1,6 @@
 import styles from "./Header.module.scss";
-import settingsIcon from "../../assets/images/icon-settings.svg";
-import searchIcon from "../../assets/images/icon-search.svg";
+import settingsIcon from "assets/images/icon-settings.svg";
+import searchIcon from "assets/images/icon-search.svg";
 
 interface HeaderProps {
   headerText: string;

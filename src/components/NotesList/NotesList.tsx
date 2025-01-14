@@ -1,16 +1,42 @@
+import { observer } from "mobx-react-lite";
+import { stateStore } from "store/statesStore";
 import { EmptyNoteList } from "./EmptyNoteList";
 import { Note } from "./Note";
 import styles from "./NotesList.module.scss";
+import { notesStore } from "store/notesStore";
+import { useFetchNotes } from "hooks/fetchData-hook";
+
 interface NotesListProps {}
 
-export const NotesList = ({}: NotesListProps) => {
+export const NotesList = observer(({}: NotesListProps) => {
+
+  useFetchNotes()
+
   return (
     <div className={styles.notesList}>
-      <button className={styles.newNoteButton}>+ Create New Note</button>
+      <button
+        className={styles.newNoteButton}
+        onClick={() => stateStore.setNoteContent("empty")}
+      >
+        + Create New Note
+      </button>
 
-      {/* <EmptyNoteList /> */}
+      {notesStore.notes.length === 0 && <EmptyNoteList />}
 
-      <div className={styles.notesL}>
+      <>
+        {stateStore.noteContent === "empty" && (
+          <Note noteTitle="" tag={[]} noteDate="" newNote />
+        )}
+
+        {notesStore.notes.map((note, index) => (
+          <Note
+            noteTitle={note.title}
+            tag={note.tags}
+            noteDate={note.lastEdited}
+            key={index}
+          />
+        ))}
+
         <Note
           noteTitle="Favorite Pasta Recipes"
           tag={["Cooking", "Recipes"]}
@@ -28,7 +54,7 @@ export const NotesList = ({}: NotesListProps) => {
           tag={["dev", "React"]}
           noteDate="25 Oct 2024"
         />
-      </div>
+      </>
     </div>
   );
-};
+});

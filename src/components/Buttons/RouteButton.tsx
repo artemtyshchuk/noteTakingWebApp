@@ -1,5 +1,5 @@
 import styles from "./buttons.module.scss";
-import arrowRight from "../../assets/images/icon-chevron-right.svg";
+import arrowRight from "assets/images/icon-chevron-right.svg";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 

@@ -1,6 +1,6 @@
 import styles from "./buttons.module.scss";
-import tagIcon from "../../assets/images/icon-tag.svg";
-import arrowRight from "../../assets/images/icon-chevron-right.svg";
+import tagIcon from "assets/images/icon-tag.svg";
+import arrowRight from "assets/images/icon-chevron-right.svg";
 import { useState } from "react";
 
 interface TagButtonProps {

@@ -1,8 +1,8 @@
-import { NotesList } from "../components/NotesList/NotesList";
-import { Header } from "../components/Header/Header";
-import { Menu } from "../components/Menu/Menu";
-import { NoteContent } from "../components/NoteContent/NoteContent";
-import { VerticalDivider } from "../components/Dividers/Dividers";
+import { NotesList } from "components/NotesList/NotesList";
+import { Header } from "components/Header/Header";
+import { Menu } from "components/Menu/Menu";
+import { NoteContent } from "components/NoteContent/NoteContent";
+import { VerticalDivider } from "components/Dividers/Dividers";
 
 export const AllNotesPage = () => {
   return (
@@ -13,7 +13,7 @@ export const AllNotesPage = () => {
         style={{
           width: "100%",
           display: "grid",
-          gridTemplateColumns: "24.4% 1fr 24.4%",
+          gridTemplateColumns: "24.4% 51.2% 24.4%",
           gridTemplateRows: "81px 1fr",
         }}
       >
