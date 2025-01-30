@@ -1,3 +1,13 @@
+[data-theme="Light Mode"] {
+  --header-lines-color: #e0e4ea;
+  --header-text-color: #0e121b;
+}
+
+[data-theme="Dark Mode"] {
+  --header-lines-color: #232530;
+  --header-text-color: #ffffff;
+}
+
 .header {
   width: 100%;
   height: 81px;
@@ -9,11 +19,10 @@
 
 .headerText {
   margin: 19px 0 26px 34px;
-
   font-weight: 600;
   font-size: 24px;
   line-height: 26px;
-  color: #0e121b;
+  color: var(--header-text-color);
 }
 
 .leftSideHeader {
@@ -29,13 +38,14 @@
   display: flex;
   gap: 8px;
   width: 250px;
-  border: 1px solid #e0e4ea;
+  border: 1px solid var(--header-lines-color);
   border-radius: 8px;
 }
 
 .searchInput {
   border: none;
-  color: #2b303b;
+  background-color: transparent;
+  color: var(--header-text-color);
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -77,6 +87,6 @@
   top: 81px;
   width: calc(100% - 18%);
   height: 1px;
-  background-color: #e0e4ea;
+  background-color: var(--header-lines-color);
   box-sizing: border-box;
 }

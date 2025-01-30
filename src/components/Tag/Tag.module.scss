@@ -1,3 +1,13 @@
+[data-theme="Light Mode"] {
+  --tag-background-color: #e0e4ea;
+  --tag-text-color: #2b303b;
+}
+
+[data-theme="Dark Mode"] {
+  --tag-background-color: #525866;
+  --tag-text-color: #fff;
+}
+
 .tagsContainer {
   display: flex;
   flex-direction: row;
@@ -9,7 +19,7 @@
   position: relative;
   padding: 2px 6px;
   border-radius: 4px;
-  background-color: #e0e4ea;
+  background-color: var(--tag-background-color);
 }
 
 .shake {
@@ -22,33 +32,9 @@
   font-weight: 400;
   font-size: 13px;
   line-height: 13px;
-  color: #2b303b;
+  color: var(--tag-text-color);
 }
 
-.deleteTagButton {
-  display: block;
-  position: absolute;
-  top: -2px;
-  right: 2px;
-  height: 8px;
-  width: 1px;
-  background-color: #2b303b;
-  transform: rotate(45deg);
-  cursor: pointer;
-}
-
-.deleteTagButton::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 8px;
-  width: 1px;
-  background-color: #2b303b;
-  transform: rotate(95deg);
-}
-
-/* Ключевые кадры для анимации "тряски" */
 @keyframes shake {
   0% {
     transform: translateX(0) rotate(0deg);

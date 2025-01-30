@@ -10,6 +10,10 @@
   margin: 12px 0;
 }
 
+.logo {
+  cursor: pointer;
+}
+
 .buttonsContainer {
   margin-top: 16px;
   display: flex;
@@ -23,7 +27,7 @@
   left: 18%;
   width: 1px;
   background-color: #e0e4ea;
-  height: 100%; /* Учитывает контент */
+  height: 100%;
 }
 
 .menuText {
@@ -31,4 +35,9 @@
   margin-top: 0;
   margin-bottom: 8px;
   color: #717784;
+}
+
+.scrollableContainer {
+  max-height: 67vh;
+  overflow-y: auto;
 }
