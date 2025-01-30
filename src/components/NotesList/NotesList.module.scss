@@ -1,3 +1,15 @@
+[data-theme="Light Mode"] {
+  --notes-title-color: #0e121b;
+  --note-date-color: #2b303b;
+  --note-hover-bg-color: #f3f5f8;
+}
+
+[data-theme="Dark Mode"] {
+  --notes-title-color: #fff;
+  --note-date-color: #cacfd8;
+  --note-hover-bg-color: #232530;
+}
+
 .notesList {
   display: flex;
   flex-direction: column;
@@ -22,43 +34,55 @@
 
 .emptyListContainer {
   padding: 8px;
-  background-color: #f3f5f8;
+  background-color: var(--note-hover-bg-color);
   border-radius: 8px;
+  margin-bottom: 16px;
 }
 
 .emptyListText {
+  color: var(--notes-title-color);
   margin: 0;
   font-size: 15px;
 }
 
 .completeNote {
   width: 100%;
+  border: none;
+  background-color: transparent;
+  border-radius: 8px;
   &:hover {
-    background-color: #f3f5f8;
+    background-color: var(--note-hover-bg-color);
     cursor: pointer;
     transition: 0.4s;
   }
 }
 
 .noteTitle {
+  justify-self: start;
   margin: 0;
   padding-bottom: 12px;
   font-weight: 600;
   font-size: 16px;
   line-height: 18px;
-  color: #0e121b;
+  color: var(--notes-title-color);
 }
 
 .noteDate {
+  justify-self: start;
   margin: 12px 0 0 0;
   font-weight: 400;
   font-size: 13px;
   line-height: 13px;
-  color: #2b303b;
+  color: var(--note-date-color);
 }
 
 .newNote {
-  background-color: #f3f5f8;
+  background-color: var(--note-hover-bg-color);
   cursor: pointer;
   transition: 0.4s;
+}
+
+.scrollableContainer {
+  max-height: 75vh;
+  overflow-y: auto;
 }

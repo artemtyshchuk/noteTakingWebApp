@@ -1,0 +1,123 @@
+[data-theme="Light Mode"] {
+  --theme-title-color: #0e121b;
+  --theme-description-color: #2b303b;
+  --icon-filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg)
+    brightness(0%) contrast(100%);
+  --button-lines-color: #f0f0f0;
+}
+
+[data-theme="Dark Mode"] {
+  --theme-title-color: #fff;
+  --theme-description-color: #cacfd8;
+  --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
+    brightness(100%) contrast(100%);
+  --button-lines-color: #525866;
+}
+
+.colorTheme {
+  margin: 32px;
+}
+
+.colorThemeTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--theme-title-color);
+}
+
+.colorThemeDescription {
+  padding-top: 4px;
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--theme-description-color);
+}
+
+.themeButtonsContainer {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.colorModeButton {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  border: 1px solid var(--button-lines-color);
+  border-radius: 12px;
+  padding: 16px;
+  &:hover {
+    background-color: var(--button-lines-color);
+    transition: 0.4s;
+  }
+}
+
+.colorModeButtonIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--button-lines-color);
+}
+
+.themeIcon {
+  filter: var(--icon-filter);
+  width: 24px;
+  height: 24px;
+}
+
+.colorModeButtonTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--theme-title-color);
+}
+
+.colorModeButtonDescription {
+  margin: 0;
+  padding-top: 4px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--theme-description-color);
+}
+
+.colorModeButtonBackground {
+  display: flex;
+  margin-left: auto;
+  justify-content: center;
+  align-items: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 4px solid #e0e4ea;
+  position: relative;
+}
+
+.colorModeButtonInput {
+  display: none;
+}
+
+.colorModeButtonInput:checked + .colorModeButtonBackground {
+  border-color: #335cff;
+  background-color: #fff;
+}
+
+.colorModeButtonInput:checked + .colorModeButtonBackground::before {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+}

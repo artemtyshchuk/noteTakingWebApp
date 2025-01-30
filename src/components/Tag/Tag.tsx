@@ -3,7 +3,7 @@ import styles from "./Tag.module.scss";
 interface TagProps {
   tag: string[];
   deleteTagButton?: boolean;
-  onDeleteTag: (tag: string) => void; 
+  onDeleteTag: (tag: string) => void;
 }
 
 export const Tag = ({ tag, deleteTagButton, onDeleteTag }: TagProps) => {

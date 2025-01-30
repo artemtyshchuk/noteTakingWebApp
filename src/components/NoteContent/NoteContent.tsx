@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { EmptyState } from "./EmptyState";
+import { NoteEditor } from "./NoteEditor";
 import styles from "./NoteContent.module.scss";
 import { stateStore } from "store/statesStore";
 
@@ -11,9 +11,13 @@ export const NoteContent = observer(({}: NoteContentProps) => {
   const renderContent = () => {
     switch (noteContent) {
       case "idle":
-        return "";
+        return null;
       case "empty":
-        return <EmptyState />;
+        return <NoteEditor />;
+      case "success":
+        return <NoteEditor />;
+      default:
+        return null;
     }
   };
 

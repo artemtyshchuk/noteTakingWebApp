@@ -1,49 +1,68 @@
 import styles from "./NoteContent.module.scss";
 import tagIcon from "assets/images/icon-tag.svg";
 import clockIcon from "assets/images/icon-clock.svg";
+import statusIcon from "assets/images/icon-status.svg";
 import { HorizontalDivider } from "components/Dividers/Dividers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tag } from "components/Tag/Tag";
 import { stateStore } from "store/statesStore";
 import { notesStore } from "store/notesStore";
 import { NoteTypes } from "types/types";
 import { format } from "date-fns";
 import { addNoteToFirestore } from "utils/firebase";
-import { useUser } from "@clerk/clerk-react"; 
+import { useUser } from "@clerk/clerk-react";
+import { v4 as uuidv4 } from "uuid";
 
-const dateFormat = format(new Date(), "dd MMM yyyy");
+const dateFormat = () => format(new Date(), "dd MMM yyyy");
 
-interface EmptyStateProps {}
-
-export const EmptyState = ({}: EmptyStateProps) => {
+export const NoteEditor = () => {
   const { user } = useUser();
 
-  const [newNote, setNewNote] = useState<NoteTypes>({
-    title: "",
-    tags: ["General"],
-    content: "",
-    lastEdited: dateFormat,
-    isArchived: false,
-  });
+  const selectedNote = notesStore.selectedNote;
+
+  const [newNote, setNewNote] = useState<NoteTypes>(
+    selectedNote || {
+      id: uuidv4(),
+      title: "",
+      tags: ["General"],
+      content: "",
+      lastEdited: dateFormat(),
+      isArchived: false,
+    }
+  );
 
   const [tagInput, setTagInput] = useState<string>("");
+
+  useEffect(() => {
+    if (selectedNote) {
+      setNewNote({ ...selectedNote });
+    } else {
+      setNewNote({
+        id: uuidv4(),
+        title: "",
+        tags: ["General"],
+        content: "",
+        lastEdited: dateFormat(),
+        isArchived: false,
+      });
+    }
+  }, [selectedNote]);
 
   const handleNoteChange = (
     field: keyof NoteTypes,
     value: string[] | string | boolean
   ) => {
-    setNewNote({ ...newNote, [field]: value });
+    setNewNote((prev) => ({ ...prev, [field]: value }));
   };
 
-  // tags
   const handleTagSubmit = (
     event: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>
   ) => {
     event?.preventDefault();
 
-    if (tagInput.trim()) {
-      const updatedTag = [...newNote.tags, tagInput.trim()];
-      handleNoteChange("tags", updatedTag);
+    if (tagInput.trim() && !newNote.tags.includes(tagInput.trim())) {
+      const updatedTags = [...newNote.tags, tagInput.trim()];
+      handleNoteChange("tags", updatedTags);
       setTagInput("");
     }
   };
@@ -53,35 +72,53 @@ export const EmptyState = ({}: EmptyStateProps) => {
     handleNoteChange("tags", updatedTags);
   };
 
-  //save / cancel
   const handleSaveNote = async () => {
-    notesStore.addNote(newNote);
-    await addNoteToFirestore(newNote, user?.id as string);
-    setNewNote({
-      title: "",
-      tags: [],
-      content: "",
-      lastEdited: dateFormat,
-      isArchived: false,
-    });
-    stateStore.setNoteContent("idle");
+    const uniqueTags = [...new Set(newNote.tags)];
+
+    try {
+      const updatedNote = { ...newNote, tags: uniqueTags };
+
+      if (selectedNote) {
+        notesStore.updateNote(newNote.id, updatedNote);
+      } else {
+        notesStore.addNote(updatedNote);
+      }
+
+      await addNoteToFirestore(updatedNote, user?.id as string);
+
+      notesStore.setSelectedNote(null);
+      setNewNote({
+        id: uuidv4(),
+        title: "",
+        tags: ["General"],
+        content: "",
+        lastEdited: dateFormat(),
+        isArchived: false,
+      });
+      stateStore.setNoteContent("idle");
+    } catch (error) {
+      console.error("Error saving note:", error);
+    }
   };
 
   const handleCancelNote = () => {
+    notesStore.setSelectedNote(null);
+    stateStore.setNoteContent("idle");
     setNewNote({
+      id: uuidv4(),
       title: "",
-      tags: [],
+      tags: ["General"],
       content: "",
-      lastEdited: dateFormat,
+      lastEdited: dateFormat(),
       isArchived: false,
     });
-    stateStore.setNoteContent("idle");
   };
 
   return (
     <>
       <label className={styles.titleInputContainer}>
         <input
+          value={newNote.title}
           onChange={(e) => handleNoteChange("title", e.target.value)}
           className={styles.titleInput}
           type="text"
@@ -97,7 +134,7 @@ export const EmptyState = ({}: EmptyStateProps) => {
         {newNote.tags.length > 0 &&
           newNote.tags.map((tag, index) => (
             <Tag
-              key={index}
+              key={tag}
               tag={[tag]}
               deleteTagButton
               onDeleteTag={handleDeleteTag}
@@ -115,7 +152,7 @@ export const EmptyState = ({}: EmptyStateProps) => {
             disabled={newNote.tags.length >= 3}
             placeholder={
               newNote.tags.length <= 2
-                ? "Add tags separated by commas (e.g. Work, Planning)"
+                ? "Add tags (e.g. Work, Planning)"
                 : "Maximum of 3 tags"
             }
             onChange={(e) => setTagInput(e.target.value)}
@@ -124,15 +161,32 @@ export const EmptyState = ({}: EmptyStateProps) => {
         </form>
       </label>
 
+      {notesStore.selectedNote?.isArchived && (
+        <div className={styles.tagInputContainer}>
+          <img
+            className={styles.contentIcon}
+            src={statusIcon}
+            alt="statusIcon"
+          />
+          <p className={styles.lastEdited}>Status</p>
+          <p className={styles.whenSaved}>Archived</p>
+        </div>
+      )}
+
       <div className={styles.tagInputContainer}>
         <img className={styles.contentIcon} src={clockIcon} alt="clockIcon" />
         <p className={styles.lastEdited}>Last edited</p>
-        <p className={styles.whenSaved}>Not yet saved</p>
+        <p className={styles.whenSaved}>
+          {notesStore.selectedNote
+            ? notesStore.selectedNote.lastEdited
+            : "Not yet saved"}
+        </p>
       </div>
 
       <HorizontalDivider margin="16px 0" />
 
       <textarea
+        value={newNote.content}
         className={styles.noteTextArea}
         name="note-content"
         id="note-content"

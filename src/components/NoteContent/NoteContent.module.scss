@@ -1,3 +1,21 @@
+[data-theme="Light Mode"] {
+  --noteContent-title-color: #0e121b;
+  --noteContent-tag-lastEdited-color: #0e121b;
+  --icon-filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
+    brightness(94%) contrast(94%);
+  --button-cancel-color: #f3f5f8;
+  --button-cancel-text-color: #fff;
+}
+
+[data-theme="Dark Mode"] {
+  --noteContent-title-color: #fff;
+  --noteContent-tag-lastEdited-color: #cacfd8;
+  --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
+    brightness(100%) contrast(100%);
+  --button-cancel-color: #232530;
+  --button-cancel-text-color: #99a0ae;
+}
+
 .noteContent {
   padding: 20px 24px 0 24px;
   display: flex;
@@ -19,34 +37,35 @@
   font-weight: 600;
   font-size: 24px;
   line-height: 22px;
-  color: #0e121b;
+  background-color: transparent;
+  color: var(--noteContent-title-color);
   outline: none;
-  color: #0e121b;
 }
 
 .titleInput::placeholder {
-  color: #0e121b;
+  color: var(--noteContent-title-color);
 }
 
 .tagInputContainer {
-  display: flex;
-  gap: 6px;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 3% 90px auto auto auto auto;
+  column-gap: 6px;
   align-items: center;
   margin-top: 16px;
 }
 
 .contentIcon {
+  filter: var(--icon-filter);
   width: 16px;
   height: 16px;
 }
 
 .tagText {
-  padding: 6px 65px 6px 0;
+  padding: 6px 0;
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
-  color: #0e121b;
+  color: var(--noteContent-tag-lastEdited-color);
   margin: 0;
 }
 
@@ -56,9 +75,9 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
-  color: #0e121b;
+  color: var(--noteContent-tag-lastEdited-color);
   outline: none;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .tagInput::placeholder {
@@ -66,22 +85,20 @@
 }
 
 .lastEdited {
-  padding-left: 6px;
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
-  color: #0e121b;
+  color: var(--noteContent-tag-lastEdited-color);
   margin: 0;
 }
 
 .whenSaved {
   margin: 0;
-  padding-left: 16px;
   width: 400px;
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
-  color: #99a0ae;
+  color: var(--noteContent-tag-lastEdited-color);
 }
 
 .noteTextArea {
@@ -91,7 +108,8 @@
   font-weight: 400;
   font-size: 13px;
   line-height: 18px;
-  color: #0e121b;
+  color: var(--noteContent-title-color);
+  background-color: transparent;
   outline: none;
   resize: none;
   box-sizing: border-box;
@@ -120,10 +138,10 @@
 .cancelButton {
   padding: 12px 16px;
   border: none;
-  background-color: #f3f5f8;
+  background-color: var(--button-cancel-color);
   border-radius: 8px;
   cursor: pointer;
-  color: #525866;
+  color: var(--button-cancel-text-color);
   font-weight: 400;
   font-size: 13px;
   line-height: 14px;

@@ -1,34 +1,47 @@
-import { NoteTypes } from 'types/types';
-import { db, collection, addDoc, getDocs } from '../../firebaseconfig'; 
-import { query, where } from 'firebase/firestore';
+import { NoteTypes } from "types/types";
+import { db, collection, getDocs } from "../../firebaseconfig";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  query,
+  updateDoc,
+  where,
+  setDoc,
+} from "firebase/firestore";
+
 
 export const addNoteToFirestore = async (note: NoteTypes, userId: string) => {
   try {
     console.log("User ID:", userId);
-    const noteWithUserId = {
-      ...note,
-      userId,
-    };
+    const noteRef = doc(db, "notes", note.id); 
 
-    const docRef = await addDoc(collection(db, "notes"), noteWithUserId);
-    console.log("Document written with ID: ", docRef.id);
+    await setDoc(noteRef, { ...note, userId }, { merge: true });
+
+    console.log("Note saved with ID:", note.id);
   } catch (e) {
-    console.error("Error adding document: ", e);
+    console.error("Error adding or updating document: ", e);
   }
 };
 
-export const getNotesByUserId = async (userId: string): Promise<(NoteTypes & { id: string })[]> => {
+
+
+export const getNotesByUserId = async (
+  userId: string
+): Promise<NoteTypes[]> => {
   try {
     console.log("Fetching notes for user ID:", userId);
 
     const q = query(collection(db, "notes"), where("userId", "==", userId));
-
     const querySnapshot = await getDocs(q);
 
-    const notes = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as NoteTypes),
-    }));
+    const notes = querySnapshot.docs.map(
+      (doc) =>
+        ({
+          ...doc.data(),
+          firestoreId: doc.id,
+        } as NoteTypes)
+    );
 
     console.log("Fetched notes:", notes);
     return notes;
@@ -37,3 +50,88 @@ export const getNotesByUserId = async (userId: string): Promise<(NoteTypes & { i
     throw e;
   }
 };
+
+export const deleteNoteFromFirestore = async (
+  noteId: string,
+  userId: string
+) => {
+  try {
+    console.log("Attempting to delete note with ID:", noteId);
+
+    const noteRef = doc(db, "notes", noteId);
+    const noteSnapshot = await getDoc(noteRef);
+
+    if (!noteSnapshot.exists()) {
+      console.log("Note not found with ID:", noteId);
+      throw new Error("Note not found");
+    }
+
+    const noteData = noteSnapshot.data();
+    console.log("Note data:", noteData);
+
+    if (noteData?.userId !== userId) {
+      throw new Error("You are not authorized to delete this note");
+    }
+
+    await deleteDoc(noteRef);
+    console.log("Note deleted successfully!");
+  } catch (e) {
+    console.error("Error deleting note: ", e);
+  }
+};
+
+export const archiveNoteInFirestore = async (
+  noteId: string,
+  userId: string
+) => {
+  try {
+    const noteRef = doc(db, "notes", noteId); 
+    const noteSnapshot = await getDoc(noteRef); 
+
+    if (!noteSnapshot.exists()) {
+      console.log("Note not found with ID:", noteId); 
+      console.error("Note not found");
+    }
+
+    const noteData = noteSnapshot.data();
+
+    if (noteData?.userId !== userId) {
+      console.log("Unauthorized access attempt by user:", userId);
+      console.error("You are not authorized to modify this note");
+    }
+
+    await updateDoc(noteRef, {
+      isArchived: true, 
+    });
+
+    console.log(`Note ${noteId} successfully archived`);
+  } catch (error) {
+    console.error("Failed to archive note:", error);
+  }
+};
+
+
+export const restoreNoteInFirestore = async(noteId: string, userId: string) => {
+  try {
+    const noteRef = doc(db, 'notes', noteId);
+    const noteSnapshot = await getDoc(noteRef);
+
+    if (!noteSnapshot.exists()) {
+      console.log("Note not found with ID:", noteId);
+      throw new Error("Note not found");
+    }
+
+    const noteData = noteSnapshot.data();
+
+    if (noteData?.userId !== userId) {
+      throw new Error("You are not authorized to modify this note");
+    }
+    await updateDoc(noteRef, {
+      isArchived: false
+    })
+    console.log(`Note ${noteId} successfully restored`);
+  } catch(error) {
+    console.log("Failed to restore note:", error);
+    throw error;
+  }
+}

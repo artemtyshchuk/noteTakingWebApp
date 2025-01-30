@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { stateStore } from "store/statesStore";
-import { EmptyNoteList } from "./EmptyNoteList";
+import { MessageForUser } from "./MessageForUser";
 import { Note } from "./Note";
 import styles from "./NotesList.module.scss";
 import { notesStore } from "store/notesStore";
@@ -9,52 +9,52 @@ import { useFetchNotes } from "hooks/fetchData-hook";
 interface NotesListProps {}
 
 export const NotesList = observer(({}: NotesListProps) => {
+  useFetchNotes();
 
-  useFetchNotes()
+  const handleCreateNewNote = () => {
+    notesStore.setSelectedNote(null);
+    stateStore.setArchivedContent(false);
+    stateStore.setNoteContent("empty");
+  };
+
+  const filteredNotes = notesStore.notes.filter(
+    (note) => stateStore.archivedContent === note.isArchived
+  );
+
+  const isEmpty = filteredNotes.length === 0;
 
   return (
     <div className={styles.notesList}>
-      <button
-        className={styles.newNoteButton}
-        onClick={() => stateStore.setNoteContent("empty")}
-      >
+      <button className={styles.newNoteButton} onClick={handleCreateNewNote}>
         + Create New Note
       </button>
 
-      {notesStore.notes.length === 0 && <EmptyNoteList />}
+      {stateStore.archivedContent && (
+        <MessageForUser
+          text="All your archived notes are stored here. You can restore or delete them anytime."
+          transparentBackground
+        />
+      )}
 
-      <>
-        {stateStore.noteContent === "empty" && (
-          <Note noteTitle="" tag={[]} noteDate="" newNote />
-        )}
+      {!stateStore.archivedContent && isEmpty && (
+        <MessageForUser text="You don’t have any notes yet. Start a new note to capture your thoughts and ideas." />
+      )}
 
-        {notesStore.notes.map((note, index) => (
+      {stateStore.noteContent === "empty" && (
+        <Note id="" noteTitle="" tag={[]} noteDate="" newNote />
+      )}
+
+      <div className={styles.scrollableContainer}>
+        {filteredNotes.map((note) => (
           <Note
+            key={note.id}
+            id={note.id}
             noteTitle={note.title}
             tag={note.tags}
             noteDate={note.lastEdited}
-            key={index}
           />
         ))}
-
-        <Note
-          noteTitle="Favorite Pasta Recipes"
-          tag={["Cooking", "Recipes"]}
-          noteDate="25 Oct 2024"
-        />
-
-        <Note
-          noteTitle="Japan Travel Planning"
-          tag={["Travel", "Personal"]}
-          noteDate="25 Oct 2024"
-        />
-
-        <Note
-          noteTitle="Weekly Workout Plan"
-          tag={["dev", "React"]}
-          noteDate="25 Oct 2024"
-        />
-      </>
+      </div>
     </div>
   );
 });

@@ -3,6 +3,7 @@ import { StateTypes } from "types/types";
 
 class StateStore {
   noteContent: StateTypes = "idle";
+  archivedContent: Boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -10,6 +11,10 @@ class StateStore {
 
   setNoteContent(noteContent: StateTypes) {
     this.noteContent = noteContent;
+  }
+
+  setArchivedContent(archivedContent: boolean) {
+    this.archivedContent = archivedContent;
   }
 }
 

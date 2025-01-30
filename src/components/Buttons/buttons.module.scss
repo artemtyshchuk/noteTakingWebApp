@@ -1,3 +1,19 @@
+[data-theme="Light Mode"] {
+  --button-text-color: #0e121b;
+  --button-background-hover-active-color: #f3f5f8;
+  --icon-filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
+    brightness(94%) contrast(94%);
+  --button-lines-color: #f0f0f0;
+}
+
+[data-theme="Dark Mode"] {
+  --button-text-color: #ffffff;
+  --button-background-hover-active-color: #525866;
+  --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
+    brightness(100%) contrast(100%);
+  --button-lines-color: #525866;
+}
+
 .button {
   height: 40px;
   width: 100%;
@@ -12,12 +28,16 @@
   cursor: pointer;
   border-radius: 8px;
   box-sizing: border-box;
-  color: #2b303b;
+  color: var(--button-text-color);
+  transition: background-color 0.3s;
 }
 
-.buttonHover {
-  background-color: #f3f5f8;
-  transition: 0.3s;
+.button:hover {
+  background-color: var(--button-background-hover-active-color);
+}
+
+.buttonActive {
+  background-color: var(--button-background-hover-active-color);
 }
 
 .buttonContainer {
@@ -30,12 +50,53 @@
 .icon {
   width: 20px;
   height: 20px;
-  filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
-    brightness(94%) contrast(94%);
+  filter: var(--icon-filter);
+  transition: filter 0.3s;
+}
+
+.button:hover .icon,
+.buttonActive .icon {
+  filter: var(--icon-filter);
 }
 
 .iconHover {
-  filter: invert(42%) sepia(57%) saturate(5740%) hue-rotate(216deg)
-    brightness(101%) contrast(94%);
+  filter: var(--icon-filter);
+  transition: 0.4s;
+}
+
+.actionButton {
+  padding: 0 16px;
+  display: flex;
+  gap: 8px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  height: 44px;
+  border: 1px solid var(--button-lines-color);
+  border-radius: 8px;
+  background-color: transparent;
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 14px;
+  color: var(--button-text-color);
+  transition: 0.3s;
+}
+
+.actionButtonIcon {
+  filter: var(--icon-filter);
+  width: 20px;
+  height: 20px;
+}
+
+.arrowRight {
+  display: none;
+}
+
+.button:hover .arrowRight,
+.buttonActive .arrowRight {
+  display: block;
+  filter: var(--icon-filter);
   transition: 0.4s;
 }

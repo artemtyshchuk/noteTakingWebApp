@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import svgr from "vite-plugin-svgr";
 import path from "path";
 
 // https://vite.dev/config/
@@ -15,6 +14,7 @@ export default defineConfig({
       pages: path.resolve(__dirname, "src/pages"),
       types: path.resolve(__dirname, "src/types"),
       hooks: path.resolve(__dirname, "src/hooks"),
+      context: path.resolve(__dirname, "src/context"),
     },
   },
 });

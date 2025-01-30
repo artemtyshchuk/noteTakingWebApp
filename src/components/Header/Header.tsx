@@ -1,16 +1,31 @@
 import styles from "./Header.module.scss";
 import settingsIcon from "assets/images/icon-settings.svg";
 import searchIcon from "assets/images/icon-search.svg";
+import { stateStore } from "store/statesStore";
+import { observer } from "mobx-react-lite";
+import { notesStore } from "store/notesStore";
+import { useLocation, useNavigate } from "react-router";
 
-interface HeaderProps {
-  headerText: string;
-}
+export const Header = observer(() => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-export const Header = ({ headerText }: HeaderProps) => {
+  const clickRouteButton = () => {
+    stateStore.setNoteContent("idle");
+    notesStore.setSelectedNote(null);
+    navigate("/settings");
+  };
+
   return (
     <div className={styles.header}>
       <div>
-        <p className={styles.headerText}>{headerText}</p>
+        <p className={styles.headerText}>
+          {location.pathname === "/settings"
+            ? "Settings"
+            : stateStore.archivedContent
+            ? "Archived Notes"
+            : "All Notes"}
+        </p>
       </div>
 
       <div className={styles.leftSideHeader}>
@@ -25,7 +40,7 @@ export const Header = ({ headerText }: HeaderProps) => {
             placeholder="Search by title, content, or tags…"
           />
         </label>
-        <button className={styles.settingsButton}>
+        <button className={styles.settingsButton} onClick={clickRouteButton}>
           <img
             className={styles.settingsIcon}
             src={settingsIcon}
@@ -37,4 +52,4 @@ export const Header = ({ headerText }: HeaderProps) => {
       <span className={styles.horizontalDivider} />
     </div>
   );
-};
+});
