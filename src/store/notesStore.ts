@@ -1,9 +1,11 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { NoteTypes } from "types/types";
 
 class NotesStore {
   notes: NoteTypes[] = [];
   selectedNote: NoteTypes | null = null;
+  searchNoteQuery: string = '';
+  
   constructor() {
     makeAutoObservable(this);
   }
@@ -13,7 +15,9 @@ class NotesStore {
   }
 
   addNote(note: NoteTypes) {
-    this.notes.unshift(note);
+    runInAction(() => {
+      this.notes.unshift(note);
+    });
   }
 
   setSelectedNote(note: NoteTypes | null) {
@@ -25,16 +29,20 @@ class NotesStore {
   }
 
   updateNote(noteId: string, updatedFields: Partial<NoteTypes>) {
-    const noteIndex = this.notes.findIndex((note) => note.firestoreId === noteId);
-    if (noteIndex !== -1) {
-      this.notes[noteIndex] = { ...this.notes[noteIndex], ...updatedFields };
-    }
+    runInAction(() => {
+      this.notes = this.notes.map((note) =>
+        note.id === noteId ? { ...note, ...updatedFields } : note
+      );
+    });
   }
-  
 
   deleteNote(noteId: string) {
     this.notes = this.notes.filter((note) => note.id !== noteId);
     this.selectedNote = null;
+  }
+
+  setSearchNoteQuery(query: string) {
+    this.searchNoteQuery = query
   }
 }
 

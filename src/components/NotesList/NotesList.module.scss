@@ -86,3 +86,14 @@
   max-height: 75vh;
   overflow-y: auto;
 }
+
+.createNoteButton {
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--notes-title-color);
+  font-size: 15px;
+}

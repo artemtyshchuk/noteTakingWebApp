@@ -11,23 +11,33 @@ import {
 } from "utils/firebase";
 import { stateStore } from "store/statesStore";
 import { useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router";
+import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 
 export const NoteActionButtons = () => {
   const { user } = useUser();
 
+  const navigate = useNavigate();
+
+  const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
+
   const handleDeleteNote = async () => {
-    if (notesStore.selectedNote) {
-      try {
-        await deleteNoteFromFirestore(
-          notesStore.selectedNote.firestoreId!,
-          user?.id as string
-        );
-        notesStore.deleteNote(notesStore.selectedNote.id);
-        console.log("Note deleted locally and from Firestore");
-        stateStore.setNoteContent("idle");
-      } catch (error) {
-        console.error("Failed to delete note:", error);
-      }
+    if (!notesStore.selectedNote || !notesStore.selectedNote.firestoreId) {
+      console.error("No selected note or firestoreId is missing");
+      return;
+    }
+
+    try {
+      await deleteNoteFromFirestore(
+        notesStore.selectedNote.firestoreId!,
+        user?.id as string
+      );
+      notesStore.deleteNote(notesStore.selectedNote.id);
+      console.log("Note deleted locally and from Firestore");
+      stateStore.setNoteContent("idle");
+      deselectNoteAndNavigate();
+    } catch (error) {
+      console.error("Failed to delete note:", error);
     }
   };
 
@@ -44,22 +54,27 @@ export const NoteActionButtons = () => {
       await archiveNoteInFirestore(noteId, userId);
       notesStore.updateNote(noteId, { isArchived: true });
       stateStore.setNoteContent("idle");
+      deselectNoteAndNavigate();
     } catch (error) {
       console.error("Failed to archive note:", error);
     }
   };
 
   const handleRestoreNote = async () => {
-    if (notesStore.selectedNote) {
-      try {
-        const noteId = notesStore.selectedNote.firestoreId!;
-        const userId = user?.id as string;
-        await restoreNoteInFirestore(noteId, userId);
-        notesStore.updateNote(noteId, { isArchived: false });
-        stateStore.setNoteContent("idle");
-      } catch (error) {
-        console.error("Failed to restore note:", error);
-      }
+    if (!notesStore.selectedNote || !notesStore.selectedNote.firestoreId) {
+      console.error("No selected note or firestoreId is missing");
+      return;
+    }
+
+    try {
+      const noteId = notesStore.selectedNote.firestoreId!;
+      const userId = user?.id as string;
+      await restoreNoteInFirestore(noteId, userId);
+      notesStore.updateNote(noteId, { isArchived: false });
+      stateStore.setNoteContent("idle");
+      deselectNoteAndNavigate();
+    } catch (error) {
+      console.error("Failed to restore note:", error);
     }
   };
 

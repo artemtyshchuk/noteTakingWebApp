@@ -3,19 +3,9 @@ import { VerticalDivider } from "components/Dividers/Dividers";
 import { Header } from "components/Header/Header";
 import { Menu } from "components/Menu/Menu";
 import { SettingButtonsList } from "components/SettingButtonsList/SettingButtonsList";
-import { ThemeContext } from "context/ThemeContext";
-import { useContext } from "react";
+import { Outlet } from "react-router";
 
 export const SettingsPage = () => {
-  const themeContext = useContext(ThemeContext);
-
-  if (!themeContext) {
-    return null; 
-  }
-
-
-  const { selectedTheme, setSelectedTheme } = themeContext;
-
   return (
     <>
       <div style={{ display: "flex", position: "relative" }}>
@@ -39,7 +29,10 @@ export const SettingsPage = () => {
             height={"calc(100% - 81px)"}
             minHeight={"calc(100vh - 81px)"}
           />
-          <ColorTheme selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme}/>
+
+          <div style={{ position: "relative" }}>
+            <Outlet />
+          </div>
         </div>
       </div>
     </>

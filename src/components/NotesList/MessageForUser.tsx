@@ -1,11 +1,15 @@
+import React from "react";
 import styles from "./NotesList.module.scss";
 
 interface MessageForUserProps {
-  text: string;
+  text: React.ReactNode;
   transparentBackground?: boolean;
 }
 
-export const MessageForUser = ({ text, transparentBackground }: MessageForUserProps) => {
+export const MessageForUser = ({
+  text,
+  transparentBackground,
+}: MessageForUserProps) => {
   return (
     <div
       className={styles.emptyListContainer}

@@ -10,7 +10,7 @@ import { notesStore } from "store/notesStore";
 import { useFetchNotes } from "hooks/fetchData-hook";
 import { observer } from "mobx-react-lite";
 import { stateStore } from "store/statesStore";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 
 export const Menu = observer(() => {
@@ -21,18 +21,21 @@ export const Menu = observer(() => {
   useFetchNotes();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const uniqTags = Array.from(
     new Set(
       notesStore.notes
         .filter((note) =>
-          stateStore.archivedContent ? note.isArchived : !note.isArchived
+          location.pathname.includes("archived")
+            ? note.isArchived
+            : !note.isArchived
         )
         .flatMap((note) => note.tags)
     )
   );
 
-  
+  const isActiveRoute = (path: string) => location.pathname.startsWith(path);
 
   useEffect(() => {
     const updateTheme = () => {
@@ -63,14 +66,18 @@ export const Menu = observer(() => {
         <RouteButton
           text="All Notes"
           icon={iconHome}
-          isActive={!stateStore.archivedContent}
-          handleAction={() => stateStore.setArchivedContent(false)}
+          isActive={
+            isActiveRoute("/") &&
+            !isActiveRoute("/archived") &&
+            !isActiveRoute("/settings")
+          }
+          handleAction={() => navigate("/")}
         />
         <RouteButton
           text="Archived Notes"
           icon={iconArchive}
-          isActive={stateStore.archivedContent === true}
-          handleAction={() => stateStore.setArchivedContent(true)}
+          isActive={isActiveRoute("/archived") && !isActiveRoute("/settings")}
+          handleAction={() => navigate("/archived")}
         />
         <HorizontalDivider margin="8px 0" />
         <p className={styles.menuText}>Tags</p>

@@ -4,7 +4,7 @@
   --icon-filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
     brightness(94%) contrast(94%);
   --button-cancel-color: #f3f5f8;
-  --button-cancel-text-color: #fff;
+  --button-cancel-text-color: #525866;
 }
 
 [data-theme="Dark Mode"] {
@@ -48,10 +48,12 @@
 
 .tagInputContainer {
   display: grid;
-  grid-template-columns: 3% 90px auto auto auto auto;
+  grid-template-columns: 5% 90px auto auto auto auto;
   column-gap: 6px;
   align-items: center;
   margin-top: 16px;
+  width: 55%;
+  box-sizing: border-box;
 }
 
 .contentIcon {

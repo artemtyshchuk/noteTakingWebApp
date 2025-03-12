@@ -26,9 +26,21 @@ export const SettingButtonsList = () => {
 
   return (
     <div className={styles.settingButtonsList}>
-      <SettingsButton icon={sunIcon} text="Color Theme" />
-      <SettingsButton icon={fontIcon} text="Font Theme" />
-      <SettingsButton icon={lockIcon} text="Change Password" />
+      <SettingsButton
+        icon={sunIcon}
+        text="Color Theme"
+        onClick={() => navigate("/settings/color-theme")}
+      />
+      <SettingsButton
+        icon={fontIcon}
+        text="Font Theme"
+        onClick={() => navigate("/settings/font-theme")}
+      />
+      <SettingsButton
+        icon={lockIcon}
+        text="Change Password"
+        onClick={() => navigate("/settings/change-password")}
+      />
       <HorizontalDivider margin="8px 0" />
 
       <SettingsButton

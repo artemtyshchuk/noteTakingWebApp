@@ -7,7 +7,8 @@
 // import { notesStore } from "store/notesStore";
 // import { observer } from "mobx-react-lite";
 
-// export const AllNotesPage = observer(() => {
+
+// export const ArchivedPage = observer(() => {
 //   return (
 //     <div style={{ display: "flex", position: "relative" }}>
 //       <Menu />
@@ -23,7 +24,7 @@
 //         <div style={{ gridColumn: "1/4" }}>
 //           <Header />
 //         </div>
-//         <NotesList isArchived={false} />
+//         <NotesList isArchived={true} />
 //         <VerticalDivider
 //           top="81px"
 //           left="38%"
