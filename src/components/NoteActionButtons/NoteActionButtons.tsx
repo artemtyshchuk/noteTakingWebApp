@@ -9,7 +9,6 @@ import {
   deleteNoteFromFirestore,
   restoreNoteInFirestore,
 } from "utils/firebase";
-import { stateStore } from "store/statesStore";
 import { useUser } from "@clerk/clerk-react";
 import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 import { useState } from "react";
@@ -49,7 +48,6 @@ export const NoteActionButtons = () => {
             user?.id as string
           );
           notesStore.deleteNote(notesStore.selectedNote!.id);
-          stateStore.setNoteContent("idle");
           deselectNoteAndNavigate();
         } catch (error) {
           console.error("Failed to delete note:", error);
@@ -77,7 +75,6 @@ export const NoteActionButtons = () => {
           notesStore.updateNote(noteId, {
             isArchived: true,
           });
-          stateStore.setNoteContent("idle");
           deselectNoteAndNavigate();
         } catch (error) {
           console.error("Failed to archive note:", error);
@@ -103,7 +100,6 @@ export const NoteActionButtons = () => {
 
           await restoreNoteInFirestore(noteId, userId);
           notesStore.updateNote(noteId, { isArchived: false });
-          stateStore.setNoteContent("idle");
           deselectNoteAndNavigate();
         } catch (error) {
           console.error("Failed to restore note:", error);

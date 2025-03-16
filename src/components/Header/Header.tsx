@@ -1,7 +1,6 @@
 import styles from "./Header.module.scss";
 import settingsIcon from "assets/images/icon-settings.svg";
 import searchIcon from "assets/images/icon-search.svg";
-import { stateStore } from "store/statesStore";
 import { observer } from "mobx-react-lite";
 import { notesStore } from "store/notesStore";
 import { useLocation, useNavigate } from "react-router";
@@ -14,7 +13,6 @@ export const Header = observer(() => {
   const location = useLocation();
 
   const clickRouteButton = () => {
-    stateStore.setNoteContent("idle");
     notesStore.setSelectedNote(null);
     navigate("/settings");
   };

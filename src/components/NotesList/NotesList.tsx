@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { stateStore } from "store/statesStore";
 import styles from "./NotesList.module.scss";
 import { notesStore } from "store/notesStore";
 import { useFetchNotes } from "hooks/fetchData-hook";
@@ -83,7 +82,6 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
           className={styles.newNoteButton}
           onClick={handleCreateNewNote}
           disabled={
-            stateStore.noteContent === "empty" ||
             filteredNotes.some((note) => !note.title)
           }
         >

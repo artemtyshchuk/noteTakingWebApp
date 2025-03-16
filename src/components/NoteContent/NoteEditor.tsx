@@ -13,7 +13,6 @@ import { useUser } from "@clerk/clerk-react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./NoteContent.module.scss";
 import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
-import { stateStore } from "store/statesStore";
 import { useModal } from "hooks/useModal";
 import { ModalWindow } from "components/ModalWindow/ModalWindow";
 
@@ -100,7 +99,6 @@ export const NoteEditor = ({}: NoteEditorProps) => {
       await addNoteToFirestore(updatedNote, user?.id as string);
 
       deselectNoteAndNavigate();
-      stateStore.setNoteContent("idle");
     } catch (error) {
       console.error("Error saving note to Firestore:", error);
     }
