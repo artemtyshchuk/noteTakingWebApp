@@ -1,14 +1,16 @@
 [data-theme="Light Mode"] {
   --noteContent-title-color: #0e121b;
-  --noteContent-tag-lastEdited-color: #0e121b;
+  --noteContent-tag-text-color: #2b303b;
+  --noteContent-tag-lastEdited-color: #99a0ae;
   --icon-filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
     brightness(94%) contrast(94%);
   --button-cancel-color: #f3f5f8;
-  --button-cancel-text-color: #fff;
+  --button-cancel-text-color: #525866;
 }
 
 [data-theme="Dark Mode"] {
   --noteContent-title-color: #fff;
+  --noteContent-tag-text-color: #cacfd8;
   --noteContent-tag-lastEdited-color: #cacfd8;
   --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
     brightness(100%) contrast(100%);
@@ -16,14 +18,19 @@
   --button-cancel-text-color: #99a0ae;
 }
 
-.noteContent {
-  padding: 20px 24px 0 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: flex-start;
-  width: calc(100% - 48px);
-  height: 100%;
+// .noteContent {
+//   padding: 20px 24px 0 24px;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: start;
+//   justify-content: flex-start;
+//   width: calc(100% - 48px);
+//   height: 100%;
+// }
+
+.noteEditor {
+  width: "100%";
+  box-sizing: "border-box";
 }
 
 .titleInputContainer {
@@ -47,11 +54,14 @@
 }
 
 .tagInputContainer {
-  display: grid;
-  grid-template-columns: 3% 90px auto auto auto auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
   column-gap: 6px;
   align-items: center;
   margin-top: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .contentIcon {
@@ -62,20 +72,21 @@
 
 .tagText {
   padding: 6px 0;
+  padding-right: 42px;
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
-  color: var(--noteContent-tag-lastEdited-color);
+  color: var(--noteContent-tag-text-color);
   margin: 0;
 }
 
 .tagInput {
-  width: 400px;
+  width: 130%;
   border: none;
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
-  color: var(--noteContent-tag-lastEdited-color);
+  color: var(--noteContent-title-color);
   outline: none;
   background-color: transparent;
 }
@@ -85,10 +96,11 @@
 }
 
 .lastEdited {
+  padding-right: 20px;
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
-  color: var(--noteContent-tag-lastEdited-color);
+  color: var(--noteContent-tag-text-color);
   margin: 0;
 }
 

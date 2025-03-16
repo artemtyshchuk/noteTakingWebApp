@@ -1,32 +1,57 @@
 import { SettingsPage } from "pages/SettingsPage";
-import { AllNotesPage } from "./pages/AllNotesPage";
+import { AllNotesPage, ArchivedPage } from "./pages/NotesPage";
 import { RouterProvider, createBrowserRouter, Outlet } from "react-router-dom";
-import { ThemeProvider } from "context/ThemeContext";
+import { ThemeProvider } from "components/Settings/context/ThemeContext";
+import { ColorThemeWrapper } from "components/Settings/wrappers/ColorThemeWrapper";
+import { NoteEditor } from "components/NoteContent/NoteEditor";
+import { FontThemeWrapper } from "components/Settings/wrappers/FontThemeWrapper";
+import { FontProvider } from "components/Settings/context/FontContext";
 
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Outlet />,
-      children: [
-        {
-          path: "/",
-          element: <AllNotesPage />,
-        },
-        {
-          path: "/settings",
-          element: <SettingsPage />,
-        },
-      ],
-    },
-  ]);
   return (
-    <>
-      <ThemeProvider>
+    <ThemeProvider>
+      <FontProvider>
         <RouterProvider router={router} />
-      </ThemeProvider>
-    </>
+      </FontProvider>
+    </ThemeProvider>
   );
 }
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Outlet />,
+    children: [
+      {
+        path: "/",
+        element: <AllNotesPage />,
+        children: [{ path: "note/:noteId", element: <NoteEditor /> }],
+      },
+      {
+        path: "/archived",
+        element: <ArchivedPage />,
+        children: [{ path: "note/:noteId", element: <NoteEditor /> }],
+      },
+      {
+        path: "/settings",
+        element: <SettingsPage />,
+        children: [
+          { path: "color-theme", element: <ColorThemeWrapper /> },
+          { path: "font-theme", element: <FontThemeWrapper /> },
+        ],
+      },
+      {
+        path: "/tags/:tagName",
+        element: <AllNotesPage />,
+        children: [{ path: "note/:noteId", element: <NoteEditor /> }],
+      },
+      {
+        path: "/archived/tags/:tagName",
+        element: <ArchivedPage />,
+        children: [{ path: "note/:noteId", element: <NoteEditor /> }],
+      },
+    ],
+  },
+]);
 
 export default App;

@@ -1,11 +1,13 @@
 [data-theme="Light Mode"] {
   --header-lines-color: #e0e4ea;
   --header-text-color: #0e121b;
+  --header-results-text-color: #525866;
 }
 
 [data-theme="Dark Mode"] {
   --header-lines-color: #232530;
   --header-text-color: #ffffff;
+  --header-results-text-color: #cacfd8;
 }
 
 .header {
@@ -89,4 +91,8 @@
   height: 1px;
   background-color: var(--header-lines-color);
   box-sizing: border-box;
+}
+
+.searchingResultsText {
+  color: var(--header-results-text-color);
 }

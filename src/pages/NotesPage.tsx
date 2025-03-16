@@ -1,13 +1,17 @@
 import { NotesList } from "components/NotesList/NotesList";
 import { Header } from "components/Header/Header";
 import { Menu } from "components/Menu/Menu";
-import { NoteContent } from "components/NoteContent/NoteContent";
 import { VerticalDivider } from "components/Dividers/Dividers";
 import { NoteActionButtons } from "components/NoteActionButtons/NoteActionButtons";
 import { notesStore } from "store/notesStore";
 import { observer } from "mobx-react-lite";
+import { Outlet } from "react-router";
 
-export const AllNotesPage = observer(() => {
+interface NotesPageProps {
+  isArchived: boolean;
+}
+
+const NotesPage = observer(({ isArchived }: NotesPageProps) => {
   return (
     <div style={{ display: "flex", position: "relative" }}>
       <Menu />
@@ -23,22 +27,46 @@ export const AllNotesPage = observer(() => {
         <div style={{ gridColumn: "1/4" }}>
           <Header />
         </div>
-        <NotesList />
+        <NotesList isArchived={isArchived} />
         <VerticalDivider
           top="81px"
           left="38%"
           height={"calc(100% - 81px)"}
           minHeight={"calc(100vh - 81px)"}
         />
-        <NoteContent />
+
+        <div
+          style={{
+            width: "100%",
+            boxSizing: "border-box",
+            padding: "20px 16px",
+            gridColumn: "2/3",
+            gridRow: "2/3",
+          }}
+        >
+          <Outlet />
+        </div>
+
         <VerticalDivider
           top="81px"
           left="80%"
           height={"calc(100% - 81px)"}
           minHeight={"calc(100vh - 81px)"}
         />
-        {notesStore.selectedNote && <NoteActionButtons />}
+        <div
+          style={{
+            width: "100%",
+            boxSizing: "border-box",
+            gridColumn: "3/4",
+            gridRow: "2/3",
+          }}
+        >
+          {notesStore.selectedNote && <NoteActionButtons />}
+        </div>
       </div>
     </div>
   );
 });
+
+export const AllNotesPage = () => <NotesPage isArchived={false} />;
+export const ArchivedPage = () => <NotesPage isArchived={true} />;

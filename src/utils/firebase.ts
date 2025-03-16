@@ -9,22 +9,26 @@ import {
   where,
   setDoc,
 } from "firebase/firestore";
-
+import { notesStore } from "store/notesStore";
 
 export const addNoteToFirestore = async (note: NoteTypes, userId: string) => {
+  if (!note.id) {
+    console.error("Note must have an ID");
+  }
+  
   try {
     console.log("User ID:", userId);
-    const noteRef = doc(db, "notes", note.id); 
+    const noteRef = doc(db, "notes", note.id);
 
     await setDoc(noteRef, { ...note, userId }, { merge: true });
+
+    notesStore.updateNote(note.id, { ...note });
 
     console.log("Note saved with ID:", note.id);
   } catch (e) {
     console.error("Error adding or updating document: ", e);
   }
 };
-
-
 
 export const getNotesByUserId = async (
   userId: string
@@ -85,11 +89,11 @@ export const archiveNoteInFirestore = async (
   userId: string
 ) => {
   try {
-    const noteRef = doc(db, "notes", noteId); 
-    const noteSnapshot = await getDoc(noteRef); 
+    const noteRef = doc(db, "notes", noteId);
+    const noteSnapshot = await getDoc(noteRef);
 
     if (!noteSnapshot.exists()) {
-      console.log("Note not found with ID:", noteId); 
+      console.log("Note not found with ID:", noteId);
       console.error("Note not found");
     }
 
@@ -101,7 +105,7 @@ export const archiveNoteInFirestore = async (
     }
 
     await updateDoc(noteRef, {
-      isArchived: true, 
+      isArchived: true,
     });
 
     console.log(`Note ${noteId} successfully archived`);
@@ -110,10 +114,12 @@ export const archiveNoteInFirestore = async (
   }
 };
 
-
-export const restoreNoteInFirestore = async(noteId: string, userId: string) => {
+export const restoreNoteInFirestore = async (
+  noteId: string,
+  userId: string
+) => {
   try {
-    const noteRef = doc(db, 'notes', noteId);
+    const noteRef = doc(db, "notes", noteId);
     const noteSnapshot = await getDoc(noteRef);
 
     if (!noteSnapshot.exists()) {
@@ -127,11 +133,11 @@ export const restoreNoteInFirestore = async(noteId: string, userId: string) => {
       throw new Error("You are not authorized to modify this note");
     }
     await updateDoc(noteRef, {
-      isArchived: false
-    })
+      isArchived: false,
+    });
     console.log(`Note ${noteId} successfully restored`);
-  } catch(error) {
+  } catch (error) {
     console.log("Failed to restore note:", error);
     throw error;
   }
-}
+};

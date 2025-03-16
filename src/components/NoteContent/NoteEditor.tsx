@@ -1,129 +1,125 @@
-import styles from "./NoteContent.module.scss";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import tagIcon from "assets/images/icon-tag.svg";
 import clockIcon from "assets/images/icon-clock.svg";
 import statusIcon from "assets/images/icon-status.svg";
 import { HorizontalDivider } from "components/Dividers/Dividers";
-import React, { useEffect, useState } from "react";
 import { Tag } from "components/Tag/Tag";
-import { stateStore } from "store/statesStore";
 import { notesStore } from "store/notesStore";
 import { NoteTypes } from "types/types";
 import { format } from "date-fns";
 import { addNoteToFirestore } from "utils/firebase";
 import { useUser } from "@clerk/clerk-react";
 import { v4 as uuidv4 } from "uuid";
+import styles from "./NoteContent.module.scss";
+import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
+import { useModal } from "hooks/useModal";
+import { ModalWindow } from "components/ModalWindow/ModalWindow";
 
 const dateFormat = () => format(new Date(), "dd MMM yyyy");
 
-export const NoteEditor = () => {
-  const { user } = useUser();
+interface NoteEditorProps {
+  isNewNote?: boolean;
+}
 
-  const selectedNote = notesStore.selectedNote;
-
-  const [newNote, setNewNote] = useState<NoteTypes>(
-    selectedNote || {
-      id: uuidv4(),
-      title: "",
-      tags: ["General"],
-      content: "",
-      lastEdited: dateFormat(),
-      isArchived: false,
-    }
-  );
-
+export const NoteEditor = ({}: NoteEditorProps) => {
+  const [note, setNote] = useState<NoteTypes | null>(null);
   const [tagInput, setTagInput] = useState<string>("");
 
-  useEffect(() => {
-    if (selectedNote) {
-      setNewNote({ ...selectedNote });
-    } else {
-      setNewNote({
-        id: uuidv4(),
-        title: "",
-        tags: ["General"],
-        content: "",
-        lastEdited: dateFormat(),
-        isArchived: false,
-      });
-    }
-  }, [selectedNote]);
+  const { user } = useUser();
 
-  const handleNoteChange = (
+  const { noteId } = useParams();
+
+  const { closeModal, isModalOpen, openModal } = useModal();
+
+  const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
+
+  useEffect(() => {
+    if (noteId) {
+      const foundNote = notesStore.notes.find((n) => n.id === noteId);
+
+      if (foundNote) {
+        setNote(foundNote);
+      } else {
+        const newNote = {
+          id: noteId || uuidv4(),
+          title: "",
+          tags: ["General"],
+          content: "",
+          lastEdited: "Not yet saved",
+          isArchived: false,
+        };
+        notesStore.addNote(newNote);
+        setNote(newNote);
+      }
+    }
+  }, [noteId, notesStore.notes]);
+
+  if (!note) {
+    return <p>Note not found</p>;
+  }
+
+  const handleChange = (
     field: keyof NoteTypes,
-    value: string[] | string | boolean
+    value: string | boolean | string[]
   ) => {
-    setNewNote((prev) => ({ ...prev, [field]: value }));
+    setNote((prev) => (prev ? { ...prev, [field]: value } : null));
   };
 
   const handleTagSubmit = (
     event: React.FormEvent<HTMLFormElement> | React.FocusEvent<HTMLInputElement>
   ) => {
-    event?.preventDefault();
+    event.preventDefault();
 
-    if (tagInput.trim() && !newNote.tags.includes(tagInput.trim())) {
-      const updatedTags = [...newNote.tags, tagInput.trim()];
-      handleNoteChange("tags", updatedTags);
+    if (tagInput.trim() && !note!.tags.includes(tagInput.trim())) {
+      handleChange("tags", [...note!.tags, tagInput.trim()]);
       setTagInput("");
     }
   };
 
   const handleDeleteTag = (tagToDelete: string) => {
-    const updatedTags = newNote.tags.filter((tag) => tag !== tagToDelete);
-    handleNoteChange("tags", updatedTags);
+    handleChange(
+      "tags",
+      note!.tags.filter((tag) => tag !== tagToDelete)
+    );
   };
 
-  const handleSaveNote = async () => {
-    const uniqueTags = [...new Set(newNote.tags)];
+  const handleSave = async () => {
+    if (!note || !note.title || !note.content)
+      return alert("Please enter a title and content for the note.");
+
+    const updatedNote = {
+      ...note,
+      lastEdited: dateFormat(),
+      tags: note.tags.length > 0 ? note.tags : ["General"],
+    };
+    notesStore.updateNote(note.id, updatedNote);
 
     try {
-      const updatedNote = { ...newNote, tags: uniqueTags };
-
-      if (selectedNote) {
-        notesStore.updateNote(newNote.id, updatedNote);
-      } else {
-        notesStore.addNote(updatedNote);
-      }
-
       await addNoteToFirestore(updatedNote, user?.id as string);
 
-      notesStore.setSelectedNote(null);
-      setNewNote({
-        id: uuidv4(),
-        title: "",
-        tags: ["General"],
-        content: "",
-        lastEdited: dateFormat(),
-        isArchived: false,
-      });
-      stateStore.setNoteContent("idle");
+      deselectNoteAndNavigate();
     } catch (error) {
-      console.error("Error saving note:", error);
+      console.error("Error saving note to Firestore:", error);
     }
   };
 
-  const handleCancelNote = () => {
-    notesStore.setSelectedNote(null);
-    stateStore.setNoteContent("idle");
-    setNewNote({
-      id: uuidv4(),
-      title: "",
-      tags: ["General"],
-      content: "",
-      lastEdited: dateFormat(),
-      isArchived: false,
-    });
+  const handleCancel = () => {
+    if (note && !note.title && !note.content) {
+      notesStore.deleteNote(note.id);
+    }
+
+    deselectNoteAndNavigate();
   };
 
   return (
-    <>
+    <div className={styles.noteEditor}>
       <label className={styles.titleInputContainer}>
         <input
-          value={newNote.title}
-          onChange={(e) => handleNoteChange("title", e.target.value)}
+          value={note.title}
+          onChange={(e) => handleChange("title", e.target.value)}
           className={styles.titleInput}
           type="text"
-          id="title"
-          name="title"
           placeholder="Enter a title..."
         />
       </label>
@@ -131,15 +127,14 @@ export const NoteEditor = () => {
       <label className={styles.tagInputContainer}>
         <img className={styles.contentIcon} src={tagIcon} alt="tagIcon" />
         <p className={styles.tagText}>Tags</p>
-        {newNote.tags.length > 0 &&
-          newNote.tags.map((tag, index) => (
-            <Tag
-              key={tag}
-              tag={[tag]}
-              deleteTagButton
-              onDeleteTag={handleDeleteTag}
-            />
-          ))}
+        {note.tags.map((tag) => (
+          <Tag
+            key={tag}
+            tag={[tag]}
+            deleteTagButton
+            onDeleteTag={handleDeleteTag}
+          />
+        ))}
         <form onSubmit={handleTagSubmit}>
           <input
             className={styles.tagInput}
@@ -148,10 +143,10 @@ export const NoteEditor = () => {
             id="tags"
             name="tags"
             value={tagInput}
-            maxLength={8}
-            disabled={newNote.tags.length >= 3}
+            maxLength={14}
+            disabled={note.tags.length >= 3}
             placeholder={
-              newNote.tags.length <= 2
+              note.tags.length <= 2
                 ? "Add tags (e.g. Work, Planning)"
                 : "Maximum of 3 tags"
             }
@@ -161,7 +156,7 @@ export const NoteEditor = () => {
         </form>
       </label>
 
-      {notesStore.selectedNote?.isArchived && (
+      {note.isArchived && (
         <div className={styles.tagInputContainer}>
           <img
             className={styles.contentIcon}
@@ -176,34 +171,46 @@ export const NoteEditor = () => {
       <div className={styles.tagInputContainer}>
         <img className={styles.contentIcon} src={clockIcon} alt="clockIcon" />
         <p className={styles.lastEdited}>Last edited</p>
-        <p className={styles.whenSaved}>
-          {notesStore.selectedNote
-            ? notesStore.selectedNote.lastEdited
-            : "Not yet saved"}
-        </p>
+        <p className={styles.whenSaved}>{note.lastEdited}</p>
       </div>
 
       <HorizontalDivider margin="16px 0" />
 
       <textarea
-        value={newNote.content}
+        value={note.content}
         className={styles.noteTextArea}
-        name="note-content"
-        id="note-content"
         placeholder="Start typing your note here…"
-        onChange={(e) => handleNoteChange("content", e.target.value)}
+        onChange={(e) => handleChange("content", e.target.value)}
       />
 
       <HorizontalDivider margin="16px 0" />
 
       <div className={styles.buttonsContainer}>
-        <button className={styles.saveButton} onClick={handleSaveNote}>
+        <button className={styles.saveButton} onClick={handleSave}>
           Save Note
         </button>
-        <button className={styles.cancelButton} onClick={handleCancelNote}>
+        <button
+          className={styles.cancelButton}
+          onClick={
+            note.title || note.content
+              ? () => handleCancel()
+              : () => openModal()
+          }
+        >
           Cancel
         </button>
       </div>
-    </>
+
+      {isModalOpen && (
+        <ModalWindow
+          icon={statusIcon}
+          title="Discard changes?"
+          description="You have unsaved changes. Are you sure you want to discard them?"
+          confirmButtonText="Discard"
+          closeModal={closeModal}
+          confirmAction={handleCancel}
+        />
+      )}
+    </div>
   );
 };

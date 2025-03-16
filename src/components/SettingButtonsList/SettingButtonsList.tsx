@@ -24,11 +24,32 @@ export const SettingButtonsList = () => {
     }
   };
 
+  const { user } = useUser();
+  const { openUserProfile } = useClerk();
+
   return (
     <div className={styles.settingButtonsList}>
-      <SettingsButton icon={sunIcon} text="Color Theme" />
-      <SettingsButton icon={fontIcon} text="Font Theme" />
-      <SettingsButton icon={lockIcon} text="Change Password" />
+      <SettingsButton
+        icon={sunIcon}
+        text="Color Theme"
+        path="/settings/color-theme"
+        onClick={() => navigate("/settings/color-theme")}
+      />
+      <SettingsButton
+        icon={fontIcon}
+        text="Font Theme"
+        path="/settings/font-theme"
+        onClick={() => navigate("/settings/font-theme")}
+      />
+      {user?.passwordEnabled && (
+        <SettingsButton
+          icon={lockIcon}
+          text="Change Password"
+          path="/settings/change-password"
+          onClick={() => openUserProfile()}
+        />
+      )}
+
       <HorizontalDivider margin="8px 0" />
 
       <SettingsButton

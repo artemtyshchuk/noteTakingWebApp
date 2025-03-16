@@ -4,14 +4,15 @@ import logo from "assets/images/logo.svg";
 import logoDark from "assets/images/logo-darkTheme.svg";
 import iconHome from "assets/images/icon-home.svg";
 import iconArchive from "assets/images/icon-archive.svg";
-import { TagButton } from "components/Buttons/TagButton";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import { notesStore } from "store/notesStore";
 import { useFetchNotes } from "hooks/fetchData-hook";
 import { observer } from "mobx-react-lite";
-import { stateStore } from "store/statesStore";
-import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { FixedSizeList as List } from "react-window";
+
+const TagButton = lazy(() => import("components/Buttons/TagButton"));
 
 export const Menu = observer(() => {
   const [theme, setTheme] = useState(
@@ -21,18 +22,21 @@ export const Menu = observer(() => {
   useFetchNotes();
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const uniqTags = Array.from(
     new Set(
-      notesStore.notes
+      [...notesStore.notes]
         .filter((note) =>
-          stateStore.archivedContent ? note.isArchived : !note.isArchived
+          location.pathname.includes("archived")
+            ? note.isArchived
+            : !note.isArchived
         )
         .flatMap((note) => note.tags)
     )
-  );
+  ).sort();
 
-  
+  const isActiveRoute = (path: string) => location.pathname.startsWith(path);
 
   useEffect(() => {
     const updateTheme = () => {
@@ -51,33 +55,60 @@ export const Menu = observer(() => {
 
   return (
     <div className={styles.menu}>
-      <div className={styles.logoContainer}>
+      <div
+        className={styles.logoContainer}
+        onClick={() => {
+          navigate("/"), (notesStore.selectedNote = null);
+        }}
+      >
         <img
           className={styles.logo}
           src={theme === "Dark Mode" ? logoDark : logo}
           alt="logo"
-          onClick={() => navigate("/")}
         />
       </div>
       <div className={styles.buttonsContainer}>
         <RouteButton
           text="All Notes"
           icon={iconHome}
-          isActive={!stateStore.archivedContent}
-          handleAction={() => stateStore.setArchivedContent(false)}
+          isActive={
+            isActiveRoute("/") &&
+            !isActiveRoute("/archived") &&
+            !isActiveRoute("/settings")
+          }
+          handleAction={() => {
+            navigate("/"), (notesStore.selectedNote = null);
+          }}
         />
         <RouteButton
           text="Archived Notes"
           icon={iconArchive}
-          isActive={stateStore.archivedContent === true}
-          handleAction={() => stateStore.setArchivedContent(true)}
+          isActive={isActiveRoute("/archived") && !isActiveRoute("/settings")}
+          handleAction={() => {
+            navigate("/archived"), (notesStore.selectedNote = null);
+          }}
         />
         <HorizontalDivider margin="8px 0" />
         <p className={styles.menuText}>Tags</p>
         <div className={styles.scrollableContainer}>
-          {uniqTags.map((tag) => (
-            <TagButton key={tag} text={tag} />
-          ))}
+          <Suspense fallback={<div>Loading...</div>}>
+            <List
+              className={styles.lazyList}
+              height={window.innerHeight - 270}
+              itemCount={uniqTags.length}
+              itemSize={40}
+              width={"100%"}
+            >
+              {({ index, style }) => {
+                const tag = uniqTags[index];
+                return (
+                  <div style={style}>
+                    <TagButton key={tag} text={tag} />
+                  </div>
+                );
+              }}
+            </List>
+          </Suspense>
         </div>
       </div>
     </div>

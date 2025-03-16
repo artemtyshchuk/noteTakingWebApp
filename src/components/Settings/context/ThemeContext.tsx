@@ -1,6 +1,11 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useMemo,
+} from "react";
 import { ThemeType } from "types/types";
-
 
 interface ThemeContextType {
   selectedTheme: ThemeType;
@@ -12,14 +17,19 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const getInitialTheme = (): ThemeType => {
     const savedTheme = localStorage.getItem("selectedTheme");
-    if (savedTheme === "Light Mode" || savedTheme === "Dark Mode" || savedTheme === "System") {
+    if (
+      savedTheme === "Light Mode" ||
+      savedTheme === "Dark Mode" ||
+      savedTheme === "System"
+    ) {
       return savedTheme as ThemeType;
     }
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     return mediaQuery.matches ? "Dark Mode" : "Light Mode";
   };
 
-  const [selectedTheme, setSelectedTheme] = useState<ThemeType>(getInitialTheme);
+  const [selectedTheme, setSelectedTheme] =
+    useState<ThemeType>(getInitialTheme);
 
   useEffect(() => {
     const applyTheme = (theme: "Light Mode" | "Dark Mode") => {
@@ -48,8 +58,13 @@ const ThemeProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("selectedTheme", selectedTheme);
   }, [selectedTheme]);
 
+  const contextValue = useMemo(
+    () => ({ selectedTheme, setSelectedTheme }),
+    [selectedTheme]
+  );
+
   return (
-    <ThemeContext.Provider value={{ selectedTheme, setSelectedTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
