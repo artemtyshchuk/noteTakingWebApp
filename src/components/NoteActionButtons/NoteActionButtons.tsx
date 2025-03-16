@@ -11,7 +11,6 @@ import {
 } from "utils/firebase";
 import { stateStore } from "store/statesStore";
 import { useUser } from "@clerk/clerk-react";
-import { useNavigate } from "react-router";
 import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 import { useState } from "react";
 import { ModalWindow } from "components/ModalWindow/ModalWindow";

@@ -82,9 +82,7 @@
   transition: 0.4s;
 }
 
-.scrollableContainer {
-  max-height: 75vh;
-  overflow-y: auto;
+.lazyList {
   scrollbar-width: none;
 }
 

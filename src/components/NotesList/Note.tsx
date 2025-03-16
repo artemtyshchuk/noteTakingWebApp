@@ -2,7 +2,6 @@ import statusIcon from "assets/images/icon-status.svg";
 import { Tag } from "components/Tag/Tag";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import styles from "./NotesList.module.scss";
-import { stateStore } from "store/statesStore";
 import { notesStore } from "store/notesStore";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router";
@@ -18,9 +17,11 @@ interface NoteProps extends React.HTMLAttributes<HTMLButtonElement> {
   newNote?: boolean;
 }
 
-export const Note = observer(
+const Note = observer(
   ({ noteTitle, tag, noteDate, newNote, id }: NoteProps) => {
     const navigate = useNavigate();
+
+    console.log("render", id);
 
     const { closeModal, isModalOpen, openModal } = useModal();
 
@@ -32,23 +33,19 @@ export const Note = observer(
     const handleClick = () => {
       if (!selectedNote) return;
 
-      // Если текущая заметка новая и не сохранена, открываем модальное окно
       if (currentNote && !currentNote.title && !currentNote.content) {
         openModal();
         return;
       }
 
-      // Устанавливаем выбранную заметку
       notesStore.setSelectedNote(selectedNote);
 
       const currentPath = window.location.pathname;
 
-      // Проверяем, находится ли текущий путь в архиве и есть ли тег
       const isArchived = currentPath.includes("/archived");
       const tagNameMatch = currentPath.match(/\/tags\/([^/]+)/);
       const tagName = tagNameMatch ? tagNameMatch[1] : null;
 
-      // Формируем новый путь
       let newPath = `/note/${id}`;
 
       if (tagName) {
@@ -59,7 +56,6 @@ export const Note = observer(
         newPath = `/archived${newPath}`;
       }
 
-      // Навигация по новому пути
       navigate(newPath, { replace: true });
     };
 
@@ -102,3 +98,5 @@ export const Note = observer(
     );
   }
 );
+
+export default Note;

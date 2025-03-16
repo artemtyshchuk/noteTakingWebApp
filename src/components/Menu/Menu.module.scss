@@ -34,8 +34,6 @@
   color: #717784;
 }
 
-.scrollableContainer {
-  max-height: 67vh;
-  overflow-y: auto;
+.lazyList {
   scrollbar-width: none;
 }

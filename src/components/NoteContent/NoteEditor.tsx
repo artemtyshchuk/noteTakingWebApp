@@ -38,7 +38,6 @@ export const NoteEditor = ({}: NoteEditorProps) => {
   useEffect(() => {
     if (noteId) {
       const foundNote = notesStore.notes.find((n) => n.id === noteId);
-      // notesStore.notes.find((note) => note.id === noteId);
 
       if (foundNote) {
         setNote(foundNote);
@@ -113,7 +112,6 @@ export const NoteEditor = ({}: NoteEditorProps) => {
     }
 
     deselectNoteAndNavigate();
-    // stateStore.setNoteContent("idle");
   };
 
   return (

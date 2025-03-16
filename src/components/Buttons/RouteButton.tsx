@@ -2,8 +2,7 @@ import styles from "./buttons.module.scss";
 import arrowRight from "assets/images/icon-chevron-right.svg";
 import { observer } from "mobx-react-lite";
 import { useLocation, useNavigate } from "react-router";
-import { notesStore } from "store/notesStore";
-import { stateStore } from "store/statesStore";
+
 
 interface RouteButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   text: string;
@@ -14,16 +13,6 @@ interface RouteButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 export const RouteButton = observer(
   ({ text, icon, handleAction, isActive }: RouteButtonProps) => {
-    const navigate = useNavigate();
-
-    const location = useLocation();
-
-    // const clickRouteButton = () => {
-    //   notesStore.setSelectedNote(null);
-    //   stateStore.setNoteContent("idle");
-    //   handleAction();
-    //   navigate("/");
-    // };
 
     return (
       <button

@@ -4,14 +4,15 @@ import logo from "assets/images/logo.svg";
 import logoDark from "assets/images/logo-darkTheme.svg";
 import iconHome from "assets/images/icon-home.svg";
 import iconArchive from "assets/images/icon-archive.svg";
-import { TagButton } from "components/Buttons/TagButton";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import { notesStore } from "store/notesStore";
 import { useFetchNotes } from "hooks/fetchData-hook";
 import { observer } from "mobx-react-lite";
-import { stateStore } from "store/statesStore";
 import { useLocation, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { FixedSizeList as List } from "react-window";
+
+const TagButton = lazy(() => import("components/Buttons/TagButton"));
 
 export const Menu = observer(() => {
   const [theme, setTheme] = useState(
@@ -90,9 +91,24 @@ export const Menu = observer(() => {
         <HorizontalDivider margin="8px 0" />
         <p className={styles.menuText}>Tags</p>
         <div className={styles.scrollableContainer}>
-          {uniqTags.map((tag) => (
-            <TagButton key={tag} text={tag} />
-          ))}
+          <Suspense fallback={<div>Loading...</div>}>
+            <List
+              className={styles.lazyList}
+              height={window.innerHeight - 270}
+              itemCount={uniqTags.length}
+              itemSize={40}
+              width={"100%"}
+            >
+              {({ index, style }) => {
+                const tag = uniqTags[index];
+                return (
+                  <div style={style}>
+                    <TagButton key={tag} text={tag} />
+                  </div>
+                );
+              }}
+            </List>
+          </Suspense>
         </div>
       </div>
     </div>

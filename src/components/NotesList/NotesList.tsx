@@ -1,12 +1,15 @@
 import { observer } from "mobx-react-lite";
 import { stateStore } from "store/statesStore";
-import { MessageForUser } from "./MessageForUser";
-import { Note } from "./Note";
 import styles from "./NotesList.module.scss";
 import { notesStore } from "store/notesStore";
 import { useFetchNotes } from "hooks/fetchData-hook";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
+import { lazy, Suspense } from "react";
+import { FixedSizeList as List } from "react-window";
+
+const MessageForUser = lazy(() => import("./MessageForUser"));
+const Note = lazy(() => import("./Note"));
 
 interface NotesListProps {
   isArchived: boolean;
@@ -14,6 +17,7 @@ interface NotesListProps {
 
 export const NotesList = observer(({ isArchived }: NotesListProps) => {
   useFetchNotes();
+
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -88,34 +92,51 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
       )}
 
       {location.pathname.includes("archived") && (
-        <MessageForUser
-          text="All your archived notes are stored here. You can restore or delete them anytime."
-          transparentBackground
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MessageForUser
+            text="All your archived notes are stored here. You can restore or delete them anytime."
+            transparentBackground
+          />{" "}
+        </Suspense>
       )}
 
       {location.pathname === "/archived" && isEmpty && (
-        <MessageForUser text={messageToCreateNewNote()} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MessageForUser text={messageToCreateNewNote()} />
+        </Suspense>
       )}
 
       {location.pathname === "/" && isEmpty && (
-        <MessageForUser text="You don’t have any notes yet. Start a new note to capture your thoughts and ideas." />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MessageForUser text="You don’t have any notes yet. Start a new note to capture your thoughts and ideas." />
+        </Suspense>
       )}
 
-      {/* {stateStore.noteContent === "empty" && (
-        <Note id="" noteTitle="" tag={[]} noteDate="" newNote />
-      )} */}
-
       <div className={styles.scrollableContainer}>
-        {filteredNotes.map((note) => (
-          <Note
-            key={note.id}
-            id={note.id}
-            noteTitle={note.title}
-            tag={note.tags}
-            noteDate={note.lastEdited}
-          />
-        ))}
+        <Suspense fallback={<div>Loading...</div>}>
+          <List
+            className={styles.lazyList}
+            height={window.innerHeight - 200}
+            itemCount={filteredNotes.length}
+            itemSize={100}
+            width={"100%"}
+          >
+            {({ index, style }) => {
+              const note = filteredNotes[index];
+              return (
+                <div style={style}>
+                  <Note
+                    key={note.id}
+                    id={note.id}
+                    noteTitle={note.title}
+                    tag={note.tags}
+                    noteDate={note.lastEdited}
+                  />
+                </div>
+              );
+            }}
+          </List>
+        </Suspense>
       </div>
     </div>
   );

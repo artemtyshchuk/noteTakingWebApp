@@ -6,7 +6,7 @@ interface MessageForUserProps {
   transparentBackground?: boolean;
 }
 
-export const MessageForUser = ({
+const MessageForUser = ({
   text,
   transparentBackground,
 }: MessageForUserProps) => {
@@ -19,3 +19,5 @@ export const MessageForUser = ({
     </div>
   );
 };
+
+export default MessageForUser;
