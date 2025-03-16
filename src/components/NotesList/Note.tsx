@@ -1,3 +1,4 @@
+import statusIcon from "assets/images/icon-status.svg";
 import { Tag } from "components/Tag/Tag";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import styles from "./NotesList.module.scss";
@@ -5,6 +6,9 @@ import { stateStore } from "store/statesStore";
 import { notesStore } from "store/notesStore";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router";
+import { useModal } from "hooks/useModal";
+import { ModalWindow } from "components/ModalWindow/ModalWindow";
+import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 
 interface NoteProps extends React.HTMLAttributes<HTMLButtonElement> {
   id: string;
@@ -18,13 +22,23 @@ export const Note = observer(
   ({ noteTitle, tag, noteDate, newNote, id }: NoteProps) => {
     const navigate = useNavigate();
 
+    const { closeModal, isModalOpen, openModal } = useModal();
+
+    const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
+
+    const currentNote = notesStore.selectedNote;
+    const selectedNote = notesStore.notes.find((note) => note.id === id);
+
     const handleClick = () => {
-      stateStore.setNoteContent("success");
-
-      const selectedNote = notesStore.notes.find((note) => note.id === id);
-
       if (!selectedNote) return;
 
+      // Если текущая заметка новая и не сохранена, открываем модальное окно
+      if (currentNote && !currentNote.title && !currentNote.content) {
+        openModal();
+        return;
+      }
+
+      // Устанавливаем выбранную заметку
       notesStore.setSelectedNote(selectedNote);
 
       const currentPath = window.location.pathname;
@@ -49,23 +63,42 @@ export const Note = observer(
       navigate(newPath, { replace: true });
     };
 
+    const confirmAction = () => {
+      closeModal();
+      deselectNoteAndNavigate();
+      notesStore.deleteNote(currentNote?.id as string);
+    };
+
     return (
-      <button
-        key={id}
-        className={`${styles.completeNote} ${newNote ? styles.newNote : ""}`}
-        onClick={handleClick}
-      >
-        <div style={{ padding: "8px" }}>
-          <p className={styles.noteTitle}>
-            {noteTitle === "" ? "Untitled Note" : noteTitle}
-          </p>
+      <>
+        <button
+          key={id}
+          className={`${styles.completeNote} ${newNote ? styles.newNote : ""}`}
+          onClick={handleClick}
+        >
+          <div style={{ padding: "8px" }}>
+            <p className={styles.noteTitle}>
+              {noteTitle === "" ? "Untitled Note" : noteTitle}
+            </p>
 
-          <Tag tag={tag} onDeleteTag={() => {}} />
+            <Tag tag={tag} onDeleteTag={() => {}} />
 
-          <p className={styles.noteDate}>{noteDate}</p>
-        </div>
-        <HorizontalDivider margin="8px 0 0 0" />
-      </button>
+            <p className={styles.noteDate}>{noteDate}</p>
+          </div>
+          <HorizontalDivider margin="8px 0 0 0" />
+        </button>
+
+        {isModalOpen && (
+          <ModalWindow
+            icon={statusIcon}
+            title="Discard changes?"
+            description="You have unsaved changes. Are you sure you want to discard them?"
+            confirmButtonText="Discard"
+            closeModal={closeModal}
+            confirmAction={confirmAction}
+          />
+        )}
+      </>
     );
   }
 );

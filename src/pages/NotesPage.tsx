@@ -37,15 +37,16 @@ const NotesPage = observer(({ isArchived }: NotesPageProps) => {
 
         <div
           style={{
+            width: "100%",
+            boxSizing: "border-box",
             padding: "20px 16px",
-            gridColumn: "2/4",
+            gridColumn: "2/3",
             gridRow: "2/3",
           }}
         >
           <Outlet />
         </div>
 
-        {/* <NoteContent /> */}
         <VerticalDivider
           top="81px"
           left="80%"
@@ -54,6 +55,8 @@ const NotesPage = observer(({ isArchived }: NotesPageProps) => {
         />
         <div
           style={{
+            width: "100%",
+            boxSizing: "border-box",
             gridColumn: "3/4",
             gridRow: "2/3",
           }}

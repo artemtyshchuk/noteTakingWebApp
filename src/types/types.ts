@@ -12,10 +12,11 @@ export type NoteTypes = {
 };
 
 export type ThemeType = "Light Mode" | "Dark Mode" | "System";
+export type FontType = 'Sans-serif' | 'Serif' | 'Monospace'
 
-export type ColorMode = {
+export type DesignModeTypes = {
   icon: string;
-  title: ThemeType;
+  title: ThemeType | FontType;
   description: string;
 };
 

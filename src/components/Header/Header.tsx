@@ -37,14 +37,20 @@ export const Header = observer(() => {
     if (search) {
       return (
         <>
-            <span className={styles.searchingResultsText}>Showing results for: </span>
-            {notesStore.searchNoteQuery}
+          <span className={styles.searchingResultsText}>
+            Showing results for:{" "}
+          </span>
+          {notesStore.searchNoteQuery}
         </>
       );
     } else if (location.pathname === "/settings") {
       return "Settings";
     } else if (location.pathname.includes("archived")) {
       return "Archived Notes";
+    } else if (location.pathname.includes("font-theme")) {
+      return "Font Theme";
+    } else if (location.pathname.includes("color-theme")) {
+      return "Color Theme";
     } else {
       return "All Notes";
     }

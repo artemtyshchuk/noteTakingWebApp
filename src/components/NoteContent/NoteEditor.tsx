@@ -14,6 +14,8 @@ import { v4 as uuidv4 } from "uuid";
 import styles from "./NoteContent.module.scss";
 import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 import { stateStore } from "store/statesStore";
+import { useModal } from "hooks/useModal";
+import { ModalWindow } from "components/ModalWindow/ModalWindow";
 
 const dateFormat = () => format(new Date(), "dd MMM yyyy");
 
@@ -22,17 +24,21 @@ interface NoteEditorProps {
 }
 
 export const NoteEditor = ({}: NoteEditorProps) => {
-  const { noteId } = useParams();
-  const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
+  const [note, setNote] = useState<NoteTypes | null>(null);
+  const [tagInput, setTagInput] = useState<string>("");
 
   const { user } = useUser();
 
-  const [note, setNote] = useState<NoteTypes | null>(null);
-  const [tagInput, setTagInput] = useState<string>("");
+  const { noteId } = useParams();
+
+  const { closeModal, isModalOpen, openModal } = useModal();
+
+  const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
 
   useEffect(() => {
     if (noteId) {
       const foundNote = notesStore.notes.find((n) => n.id === noteId);
+      // notesStore.notes.find((note) => note.id === noteId);
 
       if (foundNote) {
         setNote(foundNote);
@@ -42,7 +48,7 @@ export const NoteEditor = ({}: NoteEditorProps) => {
           title: "",
           tags: ["General"],
           content: "",
-          lastEdited: dateFormat(),
+          lastEdited: "Not yet saved",
           isArchived: false,
         };
         notesStore.addNote(newNote);
@@ -81,14 +87,14 @@ export const NoteEditor = ({}: NoteEditorProps) => {
   };
 
   const handleSave = async () => {
-    if (!note) return;
+    if (!note || !note.title || !note.content)
+      return alert("Please enter a title and content for the note.");
 
     const updatedNote = {
       ...note,
       lastEdited: dateFormat(),
       tags: note.tags.length > 0 ? note.tags : ["General"],
     };
-
     notesStore.updateNote(note.id, updatedNote);
 
     try {
@@ -107,11 +113,11 @@ export const NoteEditor = ({}: NoteEditorProps) => {
     }
 
     deselectNoteAndNavigate();
-    stateStore.setNoteContent("idle");
+    // stateStore.setNoteContent("idle");
   };
 
   return (
-    <>
+    <div className={styles.noteEditor}>
       <label className={styles.titleInputContainer}>
         <input
           value={note.title}
@@ -187,10 +193,28 @@ export const NoteEditor = ({}: NoteEditorProps) => {
         <button className={styles.saveButton} onClick={handleSave}>
           Save Note
         </button>
-        <button className={styles.cancelButton} onClick={handleCancel}>
+        <button
+          className={styles.cancelButton}
+          onClick={
+            note.title || note.content
+              ? () => handleCancel()
+              : () => openModal()
+          }
+        >
           Cancel
         </button>
       </div>
-    </>
+
+      {isModalOpen && (
+        <ModalWindow
+          icon={statusIcon}
+          title="Discard changes?"
+          description="You have unsaved changes. Are you sure you want to discard them?"
+          confirmButtonText="Discard"
+          closeModal={closeModal}
+          confirmAction={handleCancel}
+        />
+      )}
+    </div>
   );
 };

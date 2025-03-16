@@ -25,7 +25,7 @@ export const Menu = observer(() => {
 
   const uniqTags = Array.from(
     new Set(
-      notesStore.notes
+      [...notesStore.notes]
         .filter((note) =>
           location.pathname.includes("archived")
             ? note.isArchived
@@ -33,7 +33,7 @@ export const Menu = observer(() => {
         )
         .flatMap((note) => note.tags)
     )
-  );
+  ).sort();
 
   const isActiveRoute = (path: string) => location.pathname.startsWith(path);
 
@@ -54,12 +54,16 @@ export const Menu = observer(() => {
 
   return (
     <div className={styles.menu}>
-      <div className={styles.logoContainer}>
+      <div
+        className={styles.logoContainer}
+        onClick={() => {
+          navigate("/"), (notesStore.selectedNote = null);
+        }}
+      >
         <img
           className={styles.logo}
           src={theme === "Dark Mode" ? logoDark : logo}
           alt="logo"
-          onClick={() => navigate("/")}
         />
       </div>
       <div className={styles.buttonsContainer}>
@@ -71,13 +75,17 @@ export const Menu = observer(() => {
             !isActiveRoute("/archived") &&
             !isActiveRoute("/settings")
           }
-          handleAction={() => navigate("/")}
+          handleAction={() => {
+            navigate("/"), (notesStore.selectedNote = null);
+          }}
         />
         <RouteButton
           text="Archived Notes"
           icon={iconArchive}
           isActive={isActiveRoute("/archived") && !isActiveRoute("/settings")}
-          handleAction={() => navigate("/archived")}
+          handleAction={() => {
+            navigate("/archived"), (notesStore.selectedNote = null);
+          }}
         />
         <HorizontalDivider margin="8px 0" />
         <p className={styles.menuText}>Tags</p>

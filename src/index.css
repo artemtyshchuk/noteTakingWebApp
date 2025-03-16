@@ -18,3 +18,56 @@ html[data-theme="Light Mode"] {
 html[data-theme="Dark Mode"] {
   background-color: #0e121b;
 }
+
+@font-face {
+  font-family: "Inter";
+  src: url("/src/assets/fonts/inter/static/Inter_18pt-Regular.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/inter/static/Inter_18pt-Medium.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/inter/static/Inter_18pt-SemiBold.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/inter/static/Inter_18pt-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "NotoSerif";
+  src: url("/src/assets/fonts/noto-serif/static/NotoSerif-Regular.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/noto-serif/static/NotoSerif-Medium.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/noto-serif/static/NotoSerif-SemiBold.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/noto-serif/static/NotoSerif-Bold.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceCodePro";
+  src: url("/src/assets/fonts/source-code-pro/static/SourceCodePro-Regular.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/source-code-pro/static/SourceCodePro-Medium.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/source-code-pro/static/SourceCodePro-SemiBold.ttf")
+      format("truetype"),
+    url("/src/assets/fonts/source-code-pro/static/SourceCodePro-Bold.ttf")
+      format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.sans-serif {
+  font-family: "Inter", sans-serif;
+}
+
+.serif {
+  font-family: "NotoSerif", serif;
+}
+
+.monospace {
+  font-family: "SourceCodePro", monospace;
+}

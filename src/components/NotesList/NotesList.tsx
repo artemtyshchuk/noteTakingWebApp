@@ -22,10 +22,23 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
 
   const handleCreateNewNote = () => {
     const newNoteId = uuidv4();
+    notesStore.setSelectedNote({
+      id: newNoteId,
+      title: "",
+      tags: [],
+      content: "",
+      lastEdited: new Date().toISOString(),
+      isArchived: false,
+    });
     navigate(`/note/${newNoteId}`);
   };
 
-  const filteredNotes = notesStore.notes
+  const filteredNotes = [...notesStore.notes]
+    .sort((a, b) => {
+      const dateA = new Date(a.lastEdited);
+      const dateB = new Date(b.lastEdited);
+      return dateB.getTime() - dateA.getTime();
+    })
     .filter((note) => note.isArchived === isArchived)
     .filter((note) => (tagName ? note.tags.includes(tagName) : true))
     .filter((note) => {
@@ -89,9 +102,9 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
         <MessageForUser text="You don’t have any notes yet. Start a new note to capture your thoughts and ideas." />
       )}
 
-      {stateStore.noteContent === "empty" && (
+      {/* {stateStore.noteContent === "empty" && (
         <Note id="" noteTitle="" tag={[]} noteDate="" newNote />
-      )}
+      )} */}
 
       <div className={styles.scrollableContainer}>
         {filteredNotes.map((note) => (

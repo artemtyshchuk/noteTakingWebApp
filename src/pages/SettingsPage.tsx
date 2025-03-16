@@ -1,4 +1,3 @@
-import { ColorTheme } from "components/ColorTheme/ColorTheme";
 import { VerticalDivider } from "components/Dividers/Dividers";
 import { Header } from "components/Header/Header";
 import { Menu } from "components/Menu/Menu";
