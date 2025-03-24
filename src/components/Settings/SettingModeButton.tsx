@@ -17,8 +17,17 @@ export const SettingModeButton = ({
   checked,
   onChange,
 }: SettingModeButtonProps) => {
+  const handleClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+    // Предотвращаем всплытие события
+    //обратить внимание на этот момент
+    e.preventDefault();
+    if (onChange) {
+      onChange({ target: { value } } as React.ChangeEvent<HTMLInputElement>);
+    }
+  };
+
   return (
-    <label className={styles.settingModeButton}>
+    <label className={styles.settingModeButton} onClick={handleClick}>
       <div className={styles.settingModeButtonIcon}>
         <img className={styles.themeIcon} src={icon} alt={icon} />
       </div>
@@ -33,6 +42,8 @@ export const SettingModeButton = ({
         name="colorTheme"
         checked={checked}
         onChange={onChange}
+        // Предотвращаем всплытие события от input
+        onClick={(e) => e.stopPropagation()}
       />
       <span className={styles.settingModeButtonBackground} />
     </label>

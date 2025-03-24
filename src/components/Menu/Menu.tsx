@@ -11,8 +11,8 @@ import { observer } from "mobx-react-lite";
 import { useLocation, useNavigate } from "react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { FixedSizeList as List } from "react-window";
+import { TagsList } from "./TagsList";
 
-const TagButton = lazy(() => import("components/Buttons/TagButton"));
 
 export const Menu = observer(() => {
   const [theme, setTheme] = useState(
@@ -23,18 +23,6 @@ export const Menu = observer(() => {
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  const uniqTags = Array.from(
-    new Set(
-      [...notesStore.notes]
-        .filter((note) =>
-          location.pathname.includes("archived")
-            ? note.isArchived
-            : !note.isArchived
-        )
-        .flatMap((note) => note.tags)
-    )
-  ).sort();
 
   const isActiveRoute = (path: string) => location.pathname.startsWith(path);
 
@@ -90,26 +78,7 @@ export const Menu = observer(() => {
         />
         <HorizontalDivider margin="8px 0" />
         <p className={styles.menuText}>Tags</p>
-        <div className={styles.scrollableContainer}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <List
-              className={styles.lazyList}
-              height={window.innerHeight - 270}
-              itemCount={uniqTags.length}
-              itemSize={40}
-              width={"100%"}
-            >
-              {({ index, style }) => {
-                const tag = uniqTags[index];
-                return (
-                  <div style={style}>
-                    <TagButton key={tag} text={tag} />
-                  </div>
-                );
-              }}
-            </List>
-          </Suspense>
-        </div>
+        <TagsList />
       </div>
     </div>
   );

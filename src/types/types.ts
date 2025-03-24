@@ -12,7 +12,7 @@ export type NoteTypes = {
 };
 
 export type ThemeType = "Light Mode" | "Dark Mode" | "System";
-export type FontType = 'Sans-serif' | 'Serif' | 'Monospace'
+export type FontType = "Sans-serif" | "Serif" | "Monospace";
 
 export type DesignModeTypes = {
   icon: string;
@@ -20,3 +20,8 @@ export type DesignModeTypes = {
   description: string;
 };
 
+export type MenuButtonsDataTypes = {
+  text: string;
+  icon: string;
+  path: string;
+};

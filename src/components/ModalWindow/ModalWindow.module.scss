@@ -136,3 +136,18 @@
   line-height: 14px;
   text-align: center;
 }
+
+@media (max-width: 992px) {
+  //769
+
+  .modalWindow {
+    width: 46%;
+  }
+}
+
+@media (max-width: 768px) {
+  //577
+}
+
+@media (max-width: 576px) {
+}

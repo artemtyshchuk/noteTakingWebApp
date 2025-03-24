@@ -3,11 +3,14 @@ import settingsIcon from "assets/images/icon-settings.svg";
 import searchIcon from "assets/images/icon-search.svg";
 import { observer } from "mobx-react-lite";
 import { notesStore } from "store/notesStore";
-import { useLocation, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { useState } from "react";
+import { SearchInput } from "./SearchInput";
 
 export const Header = observer(() => {
-  const [search, setSearch] = useState<string>(notesStore.searchNoteQuery);
+  const [search, setSearch] = useState<string>("");
+
+  const { tagName, noteId } = useParams();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,20 +18,6 @@ export const Header = observer(() => {
   const clickRouteButton = () => {
     notesStore.setSelectedNote(null);
     navigate("/settings");
-  };
-
-  useEffect(() => {
-    const delayQuery = setTimeout(() => {
-      notesStore.setSearchNoteQuery(search);
-    }, 300);
-
-    return () => {
-      clearTimeout(delayQuery);
-    };
-  }, [search]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
   };
 
   const headerTitle = () => {
@@ -55,34 +44,25 @@ export const Header = observer(() => {
   };
 
   return (
-    <div className={styles.header}>
-      <div>
-        <p className={styles.headerText}>{headerTitle()}</p>
-      </div>
+    <>
+      <div className={styles.header}>
+        <>
+          <p className={styles.headerText}>{headerTitle()}</p>
+        </>
 
-      <div className={styles.leftSideHeader}>
-        <label className={styles.searchField}>
-          <img className={styles.searchIcon} src={searchIcon} alt="search" />
-          <input
-            className={styles.searchInput}
-            type="text"
-            name="search"
-            id="search"
-            autoComplete="off"
-            placeholder="Search by title, content, or tags…"
-            onChange={handleInputChange}
-          />
-        </label>
-        <button className={styles.settingsButton} onClick={clickRouteButton}>
-          <img
-            className={styles.settingsIcon}
-            src={settingsIcon}
-            alt="settings"
-          />
-        </button>
-      </div>
+        <div className={styles.leftSideHeader}>
+          <SearchInput handleSearch={(search: string) => setSearch(search)} />
+          <button className={styles.settingsButton} onClick={clickRouteButton}>
+            <img
+              className={styles.settingsIcon}
+              src={settingsIcon}
+              alt="settings"
+            />
+          </button>
+        </div>
 
-      <span className={styles.horizontalDivider} />
-    </div>
+        <span className={styles.horizontalDivider} />
+      </div>
+    </>
   );
 });

@@ -50,11 +50,16 @@
   border: none;
   background-color: transparent;
   border-radius: 8px;
+
   &:hover {
     background-color: var(--note-hover-bg-color);
     cursor: pointer;
     transition: 0.4s;
   }
+}
+
+.activeNote {
+  background-color: var(--note-hover-bg-color);
 }
 
 .noteTitle {
@@ -95,4 +100,131 @@
   margin: 0;
   color: var(--notes-title-color);
   font-size: 15px;
+}
+.mobileHeaderFetures {
+  display: none;
+}
+
+@media (max-width: 1439px) {
+  //1201
+  .emptyListText {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1200px) {
+  //993
+  .notesList {
+    margin: 20px 10px 0 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  //769
+
+  .emptyListContainer {
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .notesList {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .scrollableContainer {
+    margin-top: 16px;
+  }
+
+  .newNoteButton {
+    position: absolute;
+    margin: 0;
+    top: 70%;
+    right: 35px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      background-color: #fff;
+      z-index: 10;
+    }
+
+    &::before {
+      width: 18px;
+      height: 2px;
+    }
+
+    &::after {
+      width: 2px;
+      height: 18px;
+    }
+  }
+
+  .newNoteButtonText {
+    display: none;
+  }
+
+  .mobileHeaderFetures {
+    display: block;
+  }
+
+  .notesListMobileHeaderText {
+    margin: 16px 0;
+    color: var(--notes-title-color);
+    font-weight: 600;
+    font-size: 29px;
+    line-height: 100%;
+  }
+
+  .innerColor {
+    color: #525866;
+  }
+
+  .notesListMobileHeaderDescription {
+    color: #000;
+    font-weight: lighter;
+    font-size: 13px;
+    letter-spacing: 0.8px;
+    line-height: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  //577
+}
+
+@media (max-width: 576px) {
+  .newNoteButton {
+    top: 80%;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .notesListMobileHeaderText {
+    margin: 16px 0;
+    color: var(--notes-title-color);
+    font-weight: 600;
+    font-size: 23px;
+    line-height: 100%;
+  }
+
+  .notesList {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .mobileHeaderFetures {
+    display: block;
+  }
 }

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { SettingThemes } from "../SettingThems";
-import { fontModes } from "../themesData/data";
+import { fontModes } from "../../../data/themesData";
 import { FontType } from "types/types";
 import { FontContext } from "../context/FontContext";
 
