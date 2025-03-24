@@ -21,7 +21,7 @@ const Note = observer(
   ({ noteTitle, tag, noteDate, newNote, id }: NoteProps) => {
     const navigate = useNavigate();
 
-    console.log("render", id);
+    // console.log("render", id);
 
     const { closeModal, isModalOpen, openModal } = useModal();
 
@@ -45,6 +45,7 @@ const Note = observer(
       const isArchived = currentPath.includes("/archived");
       const tagNameMatch = currentPath.match(/\/tags\/([^/]+)/);
       const tagName = tagNameMatch ? tagNameMatch[1] : null;
+      const searchIncludes = currentPath.includes("/search");
 
       let newPath = `/note/${id}`;
 
@@ -56,6 +57,10 @@ const Note = observer(
         newPath = `/archived${newPath}`;
       }
 
+      if (searchIncludes) {
+        newPath = `/search${newPath}`;
+      }
+
       navigate(newPath, { replace: true });
     };
 
@@ -65,11 +70,15 @@ const Note = observer(
       notesStore.deleteNote(currentNote?.id as string);
     };
 
+    const isActive = notesStore.selectedNote?.id === id;
+
     return (
       <>
         <button
           key={id}
-          className={`${styles.completeNote} ${newNote ? styles.newNote : ""}`}
+          className={`${styles.completeNote} ${newNote ? styles.newNote : ""} ${
+            isActive ? styles.activeNote : ""
+          }`}
           onClick={handleClick}
         >
           <div style={{ padding: "8px" }}>

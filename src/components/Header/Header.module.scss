@@ -96,3 +96,50 @@
 .searchingResultsText {
   color: var(--header-results-text-color);
 }
+
+@media (max-width: 1200px) {
+  //993
+}
+
+@media (max-width: 992px) {
+  //769
+
+  .header {
+    height: fit-content;
+  }
+
+  .headerText {
+    margin: 0 10px;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 26px;
+    color: var(--header-text-color);
+  }
+
+  .leftSideHeader {
+    display: none;
+  }
+
+  .horizontalDivider {
+    display: none;
+  }
+
+  .searchField {
+    margin-top: 16px;
+    padding: 13px 16px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    border: 1px solid var(--header-lines-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 768px) {
+  //577
+}
+
+@media (max-width: 576px) {
+}

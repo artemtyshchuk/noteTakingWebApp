@@ -12,7 +12,9 @@ export const ActionButton = ({ icon, text, handleAction }: ActionButtonProps) =>
   return (
     <button className={styles.actionButton} onClick={handleAction}>
       <img  className={styles.actionButtonIcon} src={icon} alt={icon} />
+      <span className={styles.actionButtonText}>
       {text}
+      </span>
     </button>
   );
 };

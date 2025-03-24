@@ -6,6 +6,10 @@ import { ColorThemeWrapper } from "components/Settings/wrappers/ColorThemeWrappe
 import { NoteEditor } from "components/NoteContent/NoteEditor";
 import { FontThemeWrapper } from "components/Settings/wrappers/FontThemeWrapper";
 import { FontProvider } from "components/Settings/context/FontContext";
+import { SearchPage } from "pages/SearchPage";
+import { TagsPage } from "pages/TagsPage";
+import { TagsList } from "components/Menu/TagsList";
+import { NotesList } from "components/NotesList/NotesList";
 
 function App() {
   return (
@@ -49,6 +53,31 @@ const router = createBrowserRouter([
         path: "/archived/tags/:tagName",
         element: <ArchivedPage />,
         children: [{ path: "note/:noteId", element: <NoteEditor /> }],
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
+        children: [
+          {
+            path: "note/:noteId",
+            element: <NoteEditor />,
+          },
+        ],
+      },
+      {
+        path: "/tags",
+        element: <TagsPage />,
+        children: [
+          {
+            path: "tags/:tagName",
+            element: (
+              <NotesList
+                isArchived={false}
+                listHeight={window.innerHeight - 250}
+              />
+            ),
+          },
+        ],
       },
     ],
   },

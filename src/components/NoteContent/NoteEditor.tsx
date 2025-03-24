@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import tagIcon from "assets/images/icon-tag.svg";
 import clockIcon from "assets/images/icon-clock.svg";
 import statusIcon from "assets/images/icon-status.svg";
+import goBackIcon from "assets/images/icon-arrow-left.svg";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import { Tag } from "components/Tag/Tag";
 import { notesStore } from "store/notesStore";
@@ -15,6 +16,11 @@ import styles from "./NoteContent.module.scss";
 import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 import { useModal } from "hooks/useModal";
 import { ModalWindow } from "components/ModalWindow/ModalWindow";
+import { NoteActionButtons } from "components/NoteActionButtons/NoteActionButtons";
+import {
+  SaveCancelDesctopButtons,
+  SaveCancelMobileButtons,
+} from "./SaveCancelButtonsContainers";
 
 const dateFormat = () => format(new Date(), "dd MMM yyyy");
 
@@ -114,6 +120,13 @@ export const NoteEditor = ({}: NoteEditorProps) => {
 
   return (
     <div className={styles.noteEditor}>
+      <SaveCancelMobileButtons
+        note={note}
+        handleSave={handleSave}
+        handleCancel={handleCancel}
+        openModal={openModal}
+      />
+
       <label className={styles.titleInputContainer}>
         <input
           value={note.title}
@@ -185,21 +198,12 @@ export const NoteEditor = ({}: NoteEditorProps) => {
 
       <HorizontalDivider margin="16px 0" />
 
-      <div className={styles.buttonsContainer}>
-        <button className={styles.saveButton} onClick={handleSave}>
-          Save Note
-        </button>
-        <button
-          className={styles.cancelButton}
-          onClick={
-            note.title || note.content
-              ? () => handleCancel()
-              : () => openModal()
-          }
-        >
-          Cancel
-        </button>
-      </div>
+      <SaveCancelDesctopButtons
+        note={note}
+        handleCancel={handleCancel}
+        handleSave={handleSave}
+        openModal={openModal}
+      />
 
       {isModalOpen && (
         <ModalWindow

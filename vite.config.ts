@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { data } from "react-router";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,6 +16,7 @@ export default defineConfig({
       types: path.resolve(__dirname, "src/types"),
       hooks: path.resolve(__dirname, "src/hooks"),
       context: path.resolve(__dirname, "src/context"),
+      data: path.resolve(__dirname, "src/data"),
     },
   },
 });

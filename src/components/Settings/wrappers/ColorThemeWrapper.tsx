@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ThemeContext } from "components/Settings/context/ThemeContext";
 import { SettingThemes } from "../SettingThems";
-import { colorModes } from "../themesData/data";
+import { colorModes } from "../../../data/themesData";
 import { ThemeType } from "types/types";
 
 export const ColorThemeWrapper = () => {

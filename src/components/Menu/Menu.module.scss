@@ -37,3 +37,38 @@
 .lazyList {
   scrollbar-width: none;
 }
+
+@media (max-width: 1439px) {
+  //1201
+}
+
+@media (max-width: 1200px) {
+  //993
+
+  .menu {
+    margin: 0;
+    padding: 23px 32px;
+  }
+
+  .logoContainer {
+    margin: 0;
+  }
+
+  .buttonsContainer {
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  //769
+}
+
+@media (max-width: 768px) {
+  //577
+}
+
+@media (max-width: 576px) {
+  .menu {
+    padding: 23px 16px;
+  }
+}

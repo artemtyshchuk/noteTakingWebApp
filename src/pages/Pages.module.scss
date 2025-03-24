@@ -1,0 +1,121 @@
+[data-theme="Light Mode"] {
+  --notePage-background-color: #f3f5f8;
+  --notePage-content-background-color: #fff;
+}
+
+[data-theme="Dark Mode"] {
+  --notePage-background-color: #232530;
+  --notePage-content-background-color: #0E121B;
+}
+
+.notePageDesctopContainer {
+  display: flex;
+  position: relative;
+}
+
+.notePageDesctopContentContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 24.4% 51.2% 24.4%;
+  grid-template-rows: 81px 1fr;
+}
+
+.headerContainer {
+  grid-column: 1/4;
+}
+
+.outletContainer {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 16px;
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
+
+.noteActionButtonsContainer {
+  width: 100%;
+  box-sizing: border-box;
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
+
+.notePageMobileContainer {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  //993
+}
+
+@media (max-width: 992px) {
+  //769
+  .notePageDesctopContainer {
+    display: none;
+  }
+  .notePageMobileContainer {
+    display: block;
+    background-color: var(--notePage-background-color);
+  }
+
+  .notePageMobileContentContainer {
+    padding: 24px;
+    width: 100%;
+    background-color: var(--notePage-content-background-color);
+    border-radius: 16px 16px 0 0;
+    box-sizing: border-box;
+  }
+
+  .searchPageMobileContentContainer {
+    padding: 24px;
+    width: 100%;
+    background-color: var(--notePage-content-background-color);
+    border-radius: 16px 16px 0 0;
+    box-sizing: border-box;
+  }
+
+  .headerText {
+    margin: 0;
+    padding-top: 0;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 26px;
+    color: var(--header-text-color);
+  }
+
+  .tagsPageTagsListContainer {
+    margin-top: 16px;
+  }
+
+  .notePageMobileOutletContainer {
+    padding-top: 0;
+  }
+
+  .settingsPageContentContainer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 24.4% 51.2% 24.4%;
+    grid-template-rows: 81px 1fr;
+  }
+
+  .settingsPageHeaderContainer {
+    grid-column: 1/4;
+  }
+
+  .settingsPageOutletContainer {
+    position: relative;
+  }
+}
+
+@media (max-width: 768px) {
+  //577
+}
+
+@media (max-width: 576px) {
+  .notePageMobileContentContainer {
+    padding: 20px 13px;
+  }
+
+  .searchPageMobileContentContainer {
+    padding: 20px 13px;
+  }
+}
