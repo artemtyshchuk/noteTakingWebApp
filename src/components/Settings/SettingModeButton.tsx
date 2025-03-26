@@ -27,7 +27,8 @@ export const SettingModeButton = ({
   };
 
   return (
-    <label className={styles.settingModeButton} onClick={handleClick}>
+    //onClick={handleClick}
+    <label className={styles.settingModeButton}>
       <div className={styles.settingModeButtonIcon}>
         <img className={styles.themeIcon} src={icon} alt={icon} />
       </div>
@@ -39,11 +40,10 @@ export const SettingModeButton = ({
         className={styles.settingModeButtonInput}
         type="radio"
         value={value}
-        name="colorTheme"
+        name={title}
         checked={checked}
         onChange={onChange}
-        // Предотвращаем всплытие события от input
-        onClick={(e) => e.stopPropagation()}
+        // onClick={(e) => e.stopPropagation()}
       />
       <span className={styles.settingModeButtonBackground} />
     </label>

@@ -7,7 +7,6 @@ export const useGetWindowHeight = () => {
   useEffect(() => {
     const updateHeight = () => {
       if (containerRef.current) {
-        console.log("Container height:", containerRef.current.clientHeight);
         setContainerHeight(containerRef.current.clientHeight);
       }
     };

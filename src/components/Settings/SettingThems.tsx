@@ -17,6 +17,7 @@ export const SettingThemes = <T extends ThemeType | FontType>({
   settingThemesDescription,
   colorModes,
 }: SettingThemesProps<T>) => {
+  
   return (
     <div className={styles.settingThemes}>
       <p className={styles.settingThemesTitle}>{settingThemesTitle}</p>
