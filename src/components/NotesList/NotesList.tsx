@@ -7,18 +7,20 @@ import { v4 as uuidv4 } from "uuid";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 import { GoBackButton } from "components/Buttons/GoBackButton";
+import { useGetWindowHeight } from "hooks/useGetWindowHeight";
 
 const MessageForUser = lazy(() => import("./MessageForUser"));
 const Note = lazy(() => import("./Note"));
 
 interface NotesListProps {
   isArchived: boolean;
-  listHeight: number;
 }
 
 export const NotesList = observer(
-  ({ isArchived, listHeight }: NotesListProps) => {
+  ({ isArchived }: NotesListProps) => {
     useFetchNotes();
+
+    const { containerRef, containerHeight } = useGetWindowHeight();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -123,33 +125,34 @@ export const NotesList = observer(
           </div>
         )}
 
-       
-
-        <div className={styles.scrollableContainer}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <List
-              className={styles.lazyList}
-              height={isArchived ? listHeight - 48 : listHeight}
-              itemCount={filteredNotes.length}
-              itemSize={99}
-              width={"100%"}
-            >
-              {({ index, style }) => {
-                const note = filteredNotes[index];
-                return (
-                  <div style={style}>
-                    <Note
-                      key={note.id}
-                      id={note.id}
-                      noteTitle={note.title}
-                      tag={note.tags}
-                      noteDate={note.lastEdited}
-                    />
-                  </div>
-                );
-              }}
-            </List>
-          </Suspense>
+        <div ref={containerRef} className={styles.scrollableContainer}>
+          {containerHeight > 0 && (
+            <Suspense fallback={<div>Loading...</div>}>
+              <List
+                className={styles.lazyList}
+                height={containerHeight}
+                itemCount={filteredNotes.length}
+                itemSize={99}
+                width={"100%"}
+                style={{ overflowX: "hidden" }}
+              >
+                {({ index, style }) => {
+                  const note = filteredNotes[index];
+                  return (
+                    <div style={style}>
+                      <Note
+                        key={note.id}
+                        id={note.id}
+                        noteTitle={note.title}
+                        tag={note.tags}
+                        noteDate={note.lastEdited}
+                      />
+                    </div>
+                  );
+                }}
+              </List>
+            </Suspense>
+          )}
         </div>
       </div>
     );

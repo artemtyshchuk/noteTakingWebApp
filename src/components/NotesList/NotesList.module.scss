@@ -16,6 +16,13 @@
   margin: 20px 16px 0 32px;
 }
 
+.scrollableContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .newNoteButton {
   margin-bottom: 16px;
   border: none;
@@ -117,10 +124,6 @@
   .notesList {
     margin: 20px 10px 0 10px;
   }
-}
-
-@media (max-width: 992px) {
-  //769
 
   .emptyListContainer {
     margin-bottom: 0;
@@ -129,12 +132,18 @@
 
   .notesList {
     display: flex;
+    flex: 1;
     flex-direction: column;
     margin: 0;
+    height: calc(100vh - 210px);
   }
 
   .scrollableContainer {
     margin-top: 16px;
+    position: relative;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
   }
 
   .newNoteButton {
@@ -198,6 +207,10 @@
   }
 }
 
+@media (max-width: 992px) {
+  //769
+}
+
 @media (max-width: 768px) {
   //577
 }
@@ -219,9 +232,7 @@
   }
 
   .notesList {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
+    height: calc(100vh - 200px);
   }
 
   .mobileHeaderFetures {

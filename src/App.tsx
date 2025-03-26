@@ -8,7 +8,6 @@ import { FontThemeWrapper } from "components/Settings/wrappers/FontThemeWrapper"
 import { FontProvider } from "components/Settings/context/FontContext";
 import { SearchPage } from "pages/SearchPage";
 import { TagsPage } from "pages/TagsPage";
-import { TagsList } from "components/Menu/TagsList";
 import { NotesList } from "components/NotesList/NotesList";
 
 function App() {
@@ -70,12 +69,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "tags/:tagName",
-            element: (
-              <NotesList
-                isArchived={false}
-                listHeight={window.innerHeight - 250}
-              />
-            ),
+            element: <NotesList isArchived={false} />,
           },
         ],
       },

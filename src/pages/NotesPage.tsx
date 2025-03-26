@@ -28,10 +28,7 @@ const NotesPage = observer(({ isArchived }: NotesPageProps) => {
           <div className={styles.headerContainer}>
             <Header />
           </div>
-          <NotesList
-            isArchived={isArchived}
-            listHeight={window.innerHeight - 230}
-          />
+          <NotesList isArchived={isArchived} />
           <VerticalDivider
             top="81px"
             left="38%"
@@ -65,10 +62,7 @@ const NotesPage = observer(({ isArchived }: NotesPageProps) => {
           ) : (
             <>
               {!(location.pathname === `/tags/${tagName}`) && <Header />}
-              <NotesList
-                isArchived={isArchived}
-                listHeight={window.innerHeight - 240}
-              />
+              <NotesList isArchived={isArchived} />
             </>
           )}
         </div>

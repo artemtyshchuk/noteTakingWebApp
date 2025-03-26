@@ -18,7 +18,6 @@ export const SearchPage = () => {
     notesStore.setSearchNoteQuery(searchValue);
   };
 
-  // Синхронизируем локальное состояние со store при монтировании
   useEffect(() => {
     setSearch(notesStore.searchNoteQuery);
   }, []);
@@ -36,12 +35,11 @@ export const SearchPage = () => {
             <SearchInput handleSearch={handleSearch} initialValue={search} />
             {search && (
               <>
-                <p>{`All notes matching "${search}" are displayed below.`}</p>
-                <div>
-                  <NotesList
-                    isArchived={false || true}
-                    listHeight={window.innerHeight - 270}
-                  />
+                <p className={styles.searchResultsNotesListHeaderText}>
+                  {`All notes matching "${search}" are displayed below.`}
+                </p>
+                <div className={styles.searchResultsNotesListContainer}>
+                  <NotesList isArchived={false || true} />
                 </div>
               </>
             )}

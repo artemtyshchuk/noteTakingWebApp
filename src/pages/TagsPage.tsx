@@ -4,8 +4,6 @@ import { TagsList } from "components/Menu/TagsList";
 import { MobileMenu } from "components/MobileMenu/MobileMenu";
 
 export const TagsPage = () => {
-
-
   return (
     <div className={styles.notePageMobileContainer}>
       <Menu />

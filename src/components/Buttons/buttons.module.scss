@@ -40,6 +40,12 @@
   background-color: var(--button-background-hover-active-color);
 }
 
+@media (hover: none) {
+  .button:hover {
+    background-color: transparent;
+  }
+}
+
 .buttonActive {
   background-color: var(--button-background-hover-active-color);
 }

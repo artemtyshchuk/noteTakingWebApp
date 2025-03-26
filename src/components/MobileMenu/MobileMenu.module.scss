@@ -4,7 +4,7 @@
 }
 
 [data-theme="Dark Mode"] {
-  --mobileMenu-background-color: #0E121B;
+  --mobileMenu-background-color: #0e121b;
   --mobileMenu-border-color: #232530;
 }
 
@@ -14,10 +14,6 @@
 
 @media (max-width: 1200px) {
   //993
-}
-
-@media (max-width: 992px) {
-  //769
   .notePageMobileContainer {
     position: fixed;
     bottom: 0;
@@ -42,6 +38,10 @@
     height: 100%;
     background-color: var(--button-lines-color);
   }
+}
+
+@media (max-width: 992px) {
+  //769
 }
 
 @media (max-width: 768px) {

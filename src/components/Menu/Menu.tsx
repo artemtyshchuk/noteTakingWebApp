@@ -13,7 +13,6 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { FixedSizeList as List } from "react-window";
 import { TagsList } from "./TagsList";
 
-
 export const Menu = observer(() => {
   const [theme, setTheme] = useState(
     document.documentElement.getAttribute("data-theme")

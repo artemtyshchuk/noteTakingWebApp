@@ -5,7 +5,7 @@
 
 [data-theme="Dark Mode"] {
   --notePage-background-color: #232530;
-  --notePage-content-background-color: #0E121B;
+  --notePage-content-background-color: #0e121b;
 }
 
 .notePageDesctopContainer {
@@ -39,16 +39,27 @@
   grid-row: 2/3;
 }
 
+.settingsPageContentContainer {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 24.4% 51.2% 24.4%;
+  grid-template-rows: 81px 1fr;
+}
+
+.settingsPageHeaderContainer {
+  grid-column: 1/4;
+}
+
+.settingsPageOutletContainer {
+  position: relative;
+}
+
 .notePageMobileContainer {
   display: none;
 }
 
 @media (max-width: 1200px) {
   //993
-}
-
-@media (max-width: 992px) {
-  //769
   .notePageDesctopContainer {
     display: none;
   }
@@ -73,6 +84,18 @@
     box-sizing: border-box;
   }
 
+  .searchResultsNotesListHeaderText {
+    padding-bottom: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 18px;
+    color: var(--notes-title-color);
+  }
+
+  .searchResultsNotesListContainer {
+    height: calc(100vh - 140px);
+  }
+
   .headerText {
     margin: 0;
     padding-top: 0;
@@ -83,27 +106,20 @@
   }
 
   .tagsPageTagsListContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     margin-top: 16px;
+    height: 100%;
   }
 
   .notePageMobileOutletContainer {
     padding-top: 0;
   }
+}
 
-  .settingsPageContentContainer {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 24.4% 51.2% 24.4%;
-    grid-template-rows: 81px 1fr;
-  }
-
-  .settingsPageHeaderContainer {
-    grid-column: 1/4;
-  }
-
-  .settingsPageOutletContainer {
-    position: relative;
-  }
+@media (max-width: 992px) {
+  //769
 }
 
 @media (max-width: 768px) {

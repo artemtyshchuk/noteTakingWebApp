@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import { FixedSizeList as List } from "react-window";
 import { observer } from "mobx-react-lite";
 import { HorizontalDivider } from "components/Dividers/Dividers";
+import { useGetWindowHeight } from "hooks/useGetWindowHeight";
 
 interface TagsListProps {
   withDivider?: boolean;
@@ -11,6 +12,7 @@ interface TagsListProps {
 
 export const TagsList = observer(({ withDivider }: TagsListProps) => {
   const TagButton = lazy(() => import("components/Buttons/TagButton"));
+  const { containerRef, containerHeight } = useGetWindowHeight();
 
   const uniqTags = Array.from(
     new Set(
@@ -26,26 +28,37 @@ export const TagsList = observer(({ withDivider }: TagsListProps) => {
 
   return (
     <div className={styles.tagsList}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <List
-          className={styles.lazyList}
-          height={window.innerHeight - 230}
-          itemCount={uniqTags.length}
-          itemSize={45}
-          width={"100%"}
-        >
-          {({ index, style }) => {
-            const tag = uniqTags[index];
-            return (
-              <div style={style}>
-                <TagButton key={tag} text={tag} />
-                {withDivider && index < uniqTags.length - 1 && (
-                  <HorizontalDivider margin="4px 0" />
-                )}
-              </div>
-            );
-          }}
-        </List>
+      <Suspense
+        fallback={
+          <div className={styles.tagsListContainer}>
+            <div className={styles.loading}>Loading...</div>
+          </div>
+        }
+      >
+        <div ref={containerRef} className={styles.tagsListContainer}>
+          {containerHeight > 0 && (
+            <List
+              className={styles.lazyList}
+              height={containerHeight}
+              itemCount={uniqTags.length}
+              itemSize={45}
+              width={"100%"}
+              style={{ overflowX: "hidden" }}
+            >
+              {({ index, style }) => {
+                const tag = uniqTags[index];
+                return (
+                  <div style={style}>
+                    <TagButton key={tag} text={tag} />
+                    {withDivider && index < uniqTags.length - 1 && (
+                      <HorizontalDivider margin="4px 0" />
+                    )}
+                  </div>
+                );
+              }}
+            </List>
+          )}
+        </div>
       </Suspense>
     </div>
   );
