@@ -9,8 +9,7 @@ import { notesStore } from "store/notesStore";
 import { useFetchNotes } from "hooks/fetchData-hook";
 import { observer } from "mobx-react-lite";
 import { useLocation, useNavigate } from "react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
-import { FixedSizeList as List } from "react-window";
+import { useEffect, useState } from "react";
 import { TagsList } from "./TagsList";
 
 export const Menu = observer(() => {

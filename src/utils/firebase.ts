@@ -34,7 +34,6 @@ export const getNotesByUserId = async (
   userId: string
 ): Promise<NoteTypes[]> => {
   try {
-    // console.log("Fetching notes for user ID:", userId);
 
     const q = query(collection(db, "notes"), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
@@ -47,7 +46,6 @@ export const getNotesByUserId = async (
         } as NoteTypes)
     );
 
-    // console.log("Fetched notes:", notes);
     return notes;
   } catch (e) {
     console.error("Error fetching notes: ", e);

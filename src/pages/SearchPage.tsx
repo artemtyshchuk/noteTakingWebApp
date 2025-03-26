@@ -3,7 +3,6 @@ import styles from "./Pages.module.scss";
 import { SearchInput } from "components/Header/SearchInput";
 import { useState, useEffect } from "react";
 import { MobileMenu } from "components/MobileMenu/MobileMenu";
-import Note from "components/NotesList/Note";
 import { NotesList } from "components/NotesList/NotesList";
 import { notesStore } from "store/notesStore";
 import { Outlet, useLocation } from "react-router-dom";

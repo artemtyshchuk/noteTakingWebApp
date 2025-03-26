@@ -1,7 +1,6 @@
 import { MobileMenuButton } from "components/Buttons/MobileMenuButton";
 import styles from "./MobileMenu.module.scss";
 import { menuButtonsData } from "data/menuButtonsData";
-import { Header } from "components/Header/Header";
 
 export const MobileMenu = () => {
   return (
