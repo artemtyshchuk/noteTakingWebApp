@@ -1,4 +1,4 @@
-import styles from "./dividers.module.scss";
+import styles from "./Dividers.module.scss";
 
 interface HorizontalDividerProps {
   margin: string;
@@ -21,7 +21,7 @@ export const VerticalDivider = ({
   top,
   left,
   height,
-  minHeight
+  minHeight,
 }: VerticalDividerProps) => {
   return (
     <span
