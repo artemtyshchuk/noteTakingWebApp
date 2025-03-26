@@ -95,8 +95,18 @@
     margin: 0;
     padding: 23px 32px;
     width: 100%;
-    height: auto;
+    height: 78px;
     box-sizing: border-box;
+
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .logoContainer {

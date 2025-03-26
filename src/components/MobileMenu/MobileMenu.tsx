@@ -5,7 +5,7 @@ import { Header } from "components/Header/Header";
 
 export const MobileMenu = () => {
   return (
-    <div className={styles.notePageMobileContainer}>
+    <div className={styles.mobileMenuContainer}>
       {menuButtonsData.map((item, index) => (
         <div key={item.text}>
           <MobileMenuButton
