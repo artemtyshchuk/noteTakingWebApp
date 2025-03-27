@@ -1,0 +1,79 @@
+[data-theme="Light Mode"] {
+  --error-background-color: #fff;
+  --error-title-color: #0e121b;
+  --error-message-color: #2b303b;
+  --error-button-background: #335cff;
+  --error-button-text: #fff;
+}
+
+[data-theme="Dark Mode"] {
+  --error-background-color: #2b303b;
+  --error-title-color: #fff;
+  --error-message-color: #e0e4ea;
+  --error-button-background: #335cff;
+  --error-button-text: #fff;
+}
+
+.errorContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--error-background-color);
+  z-index: 1000;
+}
+
+.errorContent {
+  text-align: center;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.errorTitle {
+  margin: 0 0 16px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--error-title-color);
+}
+
+.errorMessage {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--error-message-color);
+}
+
+.reloadButton {
+  padding: 12px 24px;
+  background-color: var(--error-button-background);
+  color: var(--error-button-text);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+@media (max-width: 576px) {
+  .errorContent {
+    padding: 24px;
+    width: 85%;
+  }
+
+  .errorTitle {
+    font-size: 20px;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+  }
+}

@@ -147,7 +147,33 @@
 
 @media (max-width: 768px) {
   //577
+  .modalWindow {
+    width: 90%;
+  }
 }
 
 @media (max-width: 576px) {
+  .modalWindowTopContent {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .modalWindowBottomContent {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    padding: 9px;
+    gap: 16px;
+  }
+
+  .modalWindowDescription {
+    margin: 0;
+    padding: 6px 0 0 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--modalWindow-description-color);
+  }
 }

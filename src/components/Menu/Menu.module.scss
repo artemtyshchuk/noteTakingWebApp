@@ -10,6 +10,8 @@
   margin: 12px 0;
   cursor: pointer;
   flex-shrink: 0;
+
+  animation: fadeInOut 0.3s ease-in;
 }
 
 .buttonsContainer {
@@ -54,11 +56,8 @@
   0% {
     opacity: 0.3;
   }
-  50% {
-    opacity: 1;
-  }
   100% {
-    opacity: 0.3;
+    opacity: 1;
   }
 }
 

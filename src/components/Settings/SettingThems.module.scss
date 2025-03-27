@@ -43,6 +43,7 @@
   flex-direction: column;
   gap: 16px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .settingModeButton {
@@ -52,7 +53,6 @@
   flex-direction: row;
   align-items: center;
   gap: 16px;
-  cursor: pointer;
   border: 1px solid var(--button-lines-color);
   border-radius: 12px;
   padding: 16px;
@@ -116,8 +116,6 @@
   border-color: #335cff;
   background-color: #fff;
 }
-
-
 
 .settingModeButtonInput:checked + .settingModeButtonBackground::before {
   content: "";

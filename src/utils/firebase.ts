@@ -34,7 +34,6 @@ export const getNotesByUserId = async (
   userId: string
 ): Promise<NoteTypes[]> => {
   try {
-
     const q = query(collection(db, "notes"), where("userId", "==", userId));
     const querySnapshot = await getDocs(q);
 

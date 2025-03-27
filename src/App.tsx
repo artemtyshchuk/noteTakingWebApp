@@ -9,6 +9,8 @@ import { FontProvider } from "components/Settings/context/FontContext";
 import { SearchPage } from "pages/SearchPage";
 import { TagsPage } from "pages/TagsPage";
 import { NotesList } from "components/NotesList/NotesList";
+import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
+import { ErrorPage } from "components/ErrorPage/ErrorPage";
 
 function App() {
   return (
@@ -23,7 +25,12 @@ function App() {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Outlet />,
+    element: (
+      <ErrorBoundary>
+        <Outlet />
+      </ErrorBoundary>
+    ),
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",

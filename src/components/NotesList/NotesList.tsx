@@ -140,7 +140,7 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
           <Suspense fallback={<div>Loading...</div>}>
             <List
               className={styles.lazyList}
-              height={containerHeight}
+              height={containerHeight - 30}
               itemCount={filteredNotes.length}
               itemSize={99}
               width={"100%"}

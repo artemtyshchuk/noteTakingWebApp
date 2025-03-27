@@ -39,7 +39,7 @@ export const TagsList = observer(({ withDivider }: TagsListProps) => {
           {containerHeight > 0 && (
             <List
               className={styles.lazyList}
-              height={containerHeight}
+              height={containerHeight - 30}
               itemCount={uniqTags.length}
               itemSize={45}
               width={"100%"}

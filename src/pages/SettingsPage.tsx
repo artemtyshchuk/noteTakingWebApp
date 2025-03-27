@@ -25,7 +25,7 @@ export const SettingsPage = () => {
             height={"calc(100% - 81px)"}
             minHeight={"calc(100vh - 81px)"}
           />
-          
+
           <div className={styles.settingsPageOutletContainer}>
             <Outlet />
           </div>

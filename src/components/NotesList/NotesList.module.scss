@@ -40,10 +40,11 @@
 }
 
 .emptyListContainer {
-  padding: 8px;
+  margin-top: 12px;
+  padding: 12px 16px;
+
   background-color: var(--note-hover-bg-color);
   border-radius: 8px;
-  margin-bottom: 16px;
 }
 
 .emptyListText {
@@ -127,11 +128,6 @@
     margin: 20px 10px 0 10px;
   }
 
-  .emptyListContainer {
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
   .notesList {
     display: flex;
     flex: 1;
@@ -201,7 +197,7 @@
   }
 
   .notesListMobileHeaderDescription {
-    color: #000;
+    color: var(--notes-title-color);
     font-weight: lighter;
     font-size: 13px;
     letter-spacing: 0.8px;
