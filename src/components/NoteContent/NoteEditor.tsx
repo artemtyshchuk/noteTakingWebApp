@@ -32,6 +32,8 @@ export const NoteEditor = ({}: NoteEditorProps) => {
   const [note, setNote] = useState<NoteTypes | null>(null);
   const [tagInput, setTagInput] = useState<string>("");
 
+  const mobileScreen = window.matchMedia("(max-width: 576px)").matches;
+
   const { user } = useUser();
 
   const { noteId } = useParams();
@@ -153,7 +155,9 @@ export const NoteEditor = ({}: NoteEditorProps) => {
 
         <form onSubmit={handleTagSubmit}>
           <input
-            style={note.tags.length === 3 ? { display: "none" } : {}}
+            style={
+              note.tags.length === 3 && mobileScreen ? { display: "none" } : {}
+            }
             className={styles.tagInput}
             autoComplete="off"
             type="text"
