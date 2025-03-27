@@ -140,16 +140,20 @@ export const NoteEditor = ({}: NoteEditorProps) => {
       <label className={styles.tagInputContainer}>
         <img className={styles.contentIcon} src={tagIcon} alt="tagIcon" />
         <p className={styles.tagText}>Tags</p>
-        {note.tags.map((tag) => (
-          <Tag
-            key={tag}
-            tag={[tag]}
-            deleteTagButton
-            onDeleteTag={handleDeleteTag}
-          />
-        ))}
+        <div className={styles.tagsContainer}>
+          {note.tags.map((tag) => (
+            <Tag
+              key={tag}
+              tag={[tag]}
+              deleteTagButton
+              onDeleteTag={handleDeleteTag}
+            />
+          ))}
+        </div>
+
         <form onSubmit={handleTagSubmit}>
           <input
+            style={note.tags.length === 3 ? { display: "none" } : {}}
             className={styles.tagInput}
             autoComplete="off"
             type="text"
