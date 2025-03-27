@@ -1,6 +1,5 @@
 import styles from "./Header.module.scss";
 import settingsIcon from "assets/images/icon-settings.svg";
-import searchIcon from "assets/images/icon-search.svg";
 import { observer } from "mobx-react-lite";
 import { notesStore } from "store/notesStore";
 import { useLocation, useNavigate, useParams } from "react-router";
@@ -10,13 +9,13 @@ import { SearchInput } from "./SearchInput";
 export const Header = observer(() => {
   const [search, setSearch] = useState<string>("");
 
-  const { tagName, noteId } = useParams();
-
   const navigate = useNavigate();
   const location = useLocation();
 
   const clickRouteButton = () => {
     notesStore.setSelectedNote(null);
+    notesStore.setSearchNoteQuery("");
+    setSearch("");
     navigate("/settings");
   };
 

@@ -38,6 +38,9 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
       return;
     }
 
+    notesStore.setSearchNoteQuery("");
+
+
     const newNoteId = uuidv4();
     notesStore.setSelectedNote({
       id: newNoteId,

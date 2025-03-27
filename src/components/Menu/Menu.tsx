@@ -44,7 +44,7 @@ export const Menu = observer(() => {
       <div
         className={styles.logoContainer}
         onClick={() => {
-          navigate("/"), (notesStore.selectedNote = null);
+          navigate("/"), (notesStore.selectedNote = null), (notesStore.setSearchNoteQuery(""));
         }}
       >
         <img
@@ -63,7 +63,7 @@ export const Menu = observer(() => {
             !isActiveRoute("/settings")
           }
           handleAction={() => {
-            navigate("/"), (notesStore.selectedNote = null);
+            navigate("/"), (notesStore.selectedNote = null), (notesStore.setSearchNoteQuery(""));
           }}
         />
         <RouteButton
@@ -71,7 +71,7 @@ export const Menu = observer(() => {
           icon={iconArchive}
           isActive={isActiveRoute("/archived") && !isActiveRoute("/settings")}
           handleAction={() => {
-            navigate("/archived"), (notesStore.selectedNote = null);
+            navigate("/archived"), (notesStore.selectedNote = null), (notesStore.setSearchNoteQuery(""));
           }}
         />
         <HorizontalDivider margin="8px 0" />
