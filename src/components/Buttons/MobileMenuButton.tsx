@@ -2,6 +2,7 @@ import styles from "./buttons.module.scss";
 import { MenuButtonsDataTypes } from "types/types";
 import { useLocation, useNavigate } from "react-router";
 import { notesStore } from "store/notesStore";
+import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 
 interface MobileMenuButtonProps extends MenuButtonsDataTypes {}
 
@@ -21,6 +22,8 @@ export const MobileMenuButton = ({
   const navigate = useNavigate();
   const location = useLocation();
 
+  const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
+
   const isActive = () => {
     const matchRule = pathMatchRules[path];
     return matchRule
@@ -30,6 +33,7 @@ export const MobileMenuButton = ({
 
   const handleClick = () => {
     notesStore.setSearchNoteQuery("");
+    deselectNoteAndNavigate();
     navigate(path);
   };
 
