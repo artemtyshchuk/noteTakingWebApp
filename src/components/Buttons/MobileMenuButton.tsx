@@ -22,8 +22,6 @@ export const MobileMenuButton = ({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
-
   const isActive = () => {
     const matchRule = pathMatchRules[path];
     return matchRule
@@ -33,7 +31,7 @@ export const MobileMenuButton = ({
 
   const handleClick = () => {
     notesStore.setSearchNoteQuery("");
-    deselectNoteAndNavigate();
+    notesStore.setSelectedNote(null);
     navigate(path);
   };
 
