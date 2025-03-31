@@ -1,19 +1,17 @@
 [data-theme="Light Mode"] {
+  --icon-color: #2b303b;
   --button-text-color: #0e121b;
   --button-mobile-text-color: #525866;
   --button-background-hover-active-color: #f3f5f8;
-  --icon-filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
-    brightness(94%) contrast(94%);
   --button-lines-color: #f0f0f0;
   --button-mobile-active-color: #ebf1ff;
 }
 
 [data-theme="Dark Mode"] {
+  --icon-color: #fff;
   --button-text-color: #ffffff;
   --button-mobile-text-color: #fff;
   --button-background-hover-active-color: #525866;
-  --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
-    brightness(100%) contrast(100%);
   --button-lines-color: #525866;
   --button-mobile-active-color: #2b303b;
 }
@@ -57,21 +55,27 @@
   gap: 8px;
 }
 
-.icon {
+.icon,
+.strokeOrientedIcon {
   width: 20px;
   height: 20px;
-  filter: var(--icon-filter);
-  transition: filter 0.3s;
+  fill: var(--icon-color);
+  transition: 0.3s;
+}
+
+.strokeOrientedIcon {
+  fill: none;
+  stroke: var(--icon-color);
 }
 
 .button:hover .icon,
 .buttonActive .icon {
-  filter: var(--icon-filter);
+  fill: #335cff;
 }
 
-.iconHover {
-  filter: var(--icon-filter);
-  transition: 0.4s;
+.button:hover .strokeOrientedIcon,
+.buttonActive .strokeOrientedIcon {
+  stroke: #335cff;
 }
 
 .actionButton {
@@ -94,12 +98,6 @@
   transition: 0.3s;
 }
 
-.actionButtonIcon {
-  filter: var(--icon-filter);
-  width: 20px;
-  height: 20px;
-}
-
 .arrowRight {
   display: none;
 }
@@ -107,7 +105,13 @@
 .button:hover .arrowRight,
 .buttonActive .arrowRight {
   display: block;
-  filter: var(--icon-filter);
+  fill: var(--icon-filter);
+  transition: 0.4s;
+}
+
+.buttonActive + .strokeOrientedIcon {
+  display: block;
+  stroke: #335cff;
   transition: 0.4s;
 }
 
@@ -130,16 +134,6 @@
   border-radius: 4px;
 }
 
-.mobileMenuButtonActive {
-  background-color: var(--button-mobile-active-color);
-}
-
-.mobileMenuButtonIcon {
-  filter: var(--icon-filter);
-  width: 24px;
-  height: 24px;
-}
-
 .mobileMenuButtonText {
   margin: 0;
   padding-top: 4px;
@@ -159,10 +153,37 @@
   line-height: 14px;
   text-align: center;
 }
+
 .goBackIcon {
   width: 18px;
   height: 18px;
   filter: var(--icon-filter);
+}
+
+@media (max-width: 1200px) {
+  .icon,
+  .strokeOrientedIcon {
+    width: 24px;
+    height: 24px;
+    fill: var(--icon-color);
+    transition: 0.3s;
+  }
+
+  .strokeOrientedIcon {
+    fill: none;
+    stroke: var(--icon-color);
+  }
+
+  .mobileMenuButtonActive {
+    background-color: var(--button-mobile-active-color);
+  }
+
+  .mobileMenuButtonActive .icon {
+    fill: #335cff;
+  }
+  .mobileMenuButtonActive .strokeOrientedIcon {
+    stroke: #335cff;
+  }
 }
 
 @media (max-width: 992px) {

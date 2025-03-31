@@ -2,8 +2,7 @@
   --noteContent-title-color: #0e121b;
   --noteContent-tag-text-color: #2b303b;
   --noteContent-tag-lastEdited-color: #99a0ae;
-  --icon-filter: invert(28%) sepia(11%) saturate(178%) hue-rotate(186deg)
-    brightness(94%) contrast(94%);
+  --icon-color: #2b303b;
   --button-cancel-color: #f3f5f8;
   --button-cancel-text-color: #525866;
 }
@@ -12,8 +11,7 @@
   --noteContent-title-color: #fff;
   --noteContent-tag-text-color: #cacfd8;
   --noteContent-tag-lastEdited-color: #cacfd8;
-  --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
-    brightness(100%) contrast(100%);
+  --icon-color: #cacfd8;
   --button-cancel-color: #232530;
   --button-cancel-text-color: #99a0ae;
 }
@@ -69,7 +67,7 @@
 }
 
 .contentIcon {
-  filter: var(--icon-filter);
+  stroke: var(--icon-color);
   width: 16px;
   height: 16px;
 }

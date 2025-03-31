@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import tagIcon from "assets/images/icon-tag.svg";
-import clockIcon from "assets/images/icon-clock.svg";
+import { useParams } from "react-router-dom";
+import TagIcon from "assets/images/icon-tag.svg?react";
+import ClockIcon from "assets/images/icon-clock.svg?react";
+import StatusIcon from "assets/images/icon-status.svg?react";
 import statusIcon from "assets/images/icon-status.svg";
-import goBackIcon from "assets/images/icon-arrow-left.svg";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import { Tag } from "components/Tag/Tag";
 import { notesStore } from "store/notesStore";
@@ -16,7 +16,6 @@ import styles from "./NoteContent.module.scss";
 import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
 import { useModal } from "hooks/useModal";
 import { ModalWindow } from "components/ModalWindow/ModalWindow";
-import { NoteActionButtons } from "components/NoteActionButtons/NoteActionButtons";
 import {
   SaveCancelDesctopButtons,
   SaveCancelMobileButtons,
@@ -140,7 +139,7 @@ export const NoteEditor = ({}: NoteEditorProps) => {
       </label>
 
       <label className={styles.tagInputContainer}>
-        <img className={styles.contentIcon} src={tagIcon} alt="tagIcon" />
+        <TagIcon className={styles.contentIcon} />
         <p className={styles.tagText}>Tags</p>
         <div className={styles.tagsContainer}>
           {note.tags.map((tag) => (
@@ -179,18 +178,14 @@ export const NoteEditor = ({}: NoteEditorProps) => {
 
       {note.isArchived && (
         <div className={styles.tagInputContainer}>
-          <img
-            className={styles.contentIcon}
-            src={statusIcon}
-            alt="statusIcon"
-          />
+          <StatusIcon className={styles.contentIcon} />
           <p className={styles.lastEdited}>Status</p>
           <p className={styles.whenSaved}>Archived</p>
         </div>
       )}
 
       <div className={styles.tagInputContainer}>
-        <img className={styles.contentIcon} src={clockIcon} alt="clockIcon" />
+        <ClockIcon className={styles.contentIcon} />
         <p className={styles.lastEdited}>Last edited</p>
         <p className={styles.whenSaved}>{note.lastEdited}</p>
       </div>

@@ -1,5 +1,5 @@
 import styles from "./Header.module.scss";
-import settingsIcon from "assets/images/icon-settings.svg";
+import SettingsIcon from "assets/images/icon-settings.svg?react";
 import { observer } from "mobx-react-lite";
 import { notesStore } from "store/notesStore";
 import { useLocation, useNavigate, useParams } from "react-router";
@@ -42,6 +42,8 @@ export const Header = observer(() => {
     }
   };
 
+  const isActive = location.pathname === "/settings";
+
   return (
     <>
       <div className={styles.header}>
@@ -49,14 +51,14 @@ export const Header = observer(() => {
           <p className={styles.headerText}>{headerTitle()}</p>
         </>
 
-        <div className={styles.leftSideHeader}>
+        <div
+          className={`${styles.leftSideHeader} ${
+            isActive ? styles.leftSideHeaderActive : ""
+          }`}
+        >
           <SearchInput handleSearch={(search: string) => setSearch(search)} />
           <button className={styles.settingsButton} onClick={clickRouteButton}>
-            <img
-              className={styles.settingsIcon}
-              src={settingsIcon}
-              alt="settings"
-            />
+            <SettingsIcon className={styles.settingsIcon} />
           </button>
         </div>
 

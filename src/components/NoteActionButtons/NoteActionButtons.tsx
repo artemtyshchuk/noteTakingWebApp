@@ -113,12 +113,12 @@ export const NoteActionButtons = () => {
       {notesStore.selectedNote && notesStore.selectedNote.isArchived ? (
         <>
           <ActionButton
-            icon={restoreIcon}
+            restoreIcon
             text="Restore Note"
             handleAction={handleRestoreNote}
           />
           <ActionButton
-            icon={deleteIcon}
+            deleteIcon
             text="Delete Note"
             handleAction={handleDeleteNote}
           />
@@ -126,12 +126,12 @@ export const NoteActionButtons = () => {
       ) : (
         <>
           <ActionButton
-            icon={archiveIcon}
+            archiveIcon
             text="Archive Note"
             handleAction={handleArchiveNote}
           />
           <ActionButton
-            icon={deleteIcon}
+            deleteIcon
             text="Delete Note"
             handleAction={handleDeleteNote}
           />

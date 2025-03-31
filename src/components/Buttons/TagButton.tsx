@@ -1,5 +1,5 @@
 import styles from "./buttons.module.scss";
-import tagIcon from "assets/images/icon-tag.svg";
+import TagIcon from "assets/images/icon-tag.svg?react";
 import arrowRight from "assets/images/icon-chevron-right.svg";
 import { useLocation, useNavigate } from "react-router";
 
@@ -11,7 +11,9 @@ const TagButton = ({ text }: TagButtonProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isActive = location.pathname === `/tags/${text}`;
+  const isActive =
+    location.pathname === `/tags/${text}` ||
+    location.pathname === `/archived/tags/${text}`;
 
   const handleClickTagButton = () => {
     const path = location.pathname.includes("archived")
@@ -26,7 +28,7 @@ const TagButton = ({ text }: TagButtonProps) => {
       onClick={handleClickTagButton}
     >
       <div className={styles.buttonContainer}>
-        <img className={styles.icon} src={tagIcon} alt="icon" />
+        <TagIcon className={styles.strokeOrientedIcon} />
         <p className={styles.routeButtonText}>{text}</p>
       </div>
       <img className={styles.arrowRight} src={arrowRight} alt="arrow" />

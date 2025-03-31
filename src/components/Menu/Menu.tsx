@@ -44,7 +44,9 @@ export const Menu = observer(() => {
       <div
         className={styles.logoContainer}
         onClick={() => {
-          navigate("/"), (notesStore.selectedNote = null), (notesStore.setSearchNoteQuery(""));
+          navigate("/"),
+            (notesStore.selectedNote = null),
+            notesStore.setSearchNoteQuery("");
         }}
       >
         <img
@@ -56,23 +58,27 @@ export const Menu = observer(() => {
       <div className={styles.buttonsContainer}>
         <RouteButton
           text="All Notes"
-          icon={iconHome}
           isActive={
             isActiveRoute("/") &&
             !isActiveRoute("/archived") &&
             !isActiveRoute("/settings")
           }
           handleAction={() => {
-            navigate("/"), (notesStore.selectedNote = null), (notesStore.setSearchNoteQuery(""));
+            navigate("/"),
+              (notesStore.selectedNote = null),
+              notesStore.setSearchNoteQuery("");
           }}
+          home
         />
         <RouteButton
           text="Archived Notes"
-          icon={iconArchive}
           isActive={isActiveRoute("/archived") && !isActiveRoute("/settings")}
           handleAction={() => {
-            navigate("/archived"), (notesStore.selectedNote = null), (notesStore.setSearchNoteQuery(""));
+            navigate("/archived"),
+              (notesStore.selectedNote = null),
+              notesStore.setSearchNoteQuery("");
           }}
+          archive
         />
         <HorizontalDivider margin="8px 0" />
         <p className={styles.menuText}>Tags</p>

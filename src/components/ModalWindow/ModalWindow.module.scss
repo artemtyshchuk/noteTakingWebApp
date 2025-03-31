@@ -3,7 +3,7 @@
   --modalWindow-title-color: #0e121b;
   --modalWindow-description-color: #2b303b;
   --modalWindow-icon-wrapper-color: #f3f5f8;
-
+  --modalWindow-border-color: #e0e4ea;
   --modalWindow-cancel-button-color: #f3f5f8;
   --modalWindow-cancel-button-text-color: #525866;
   --modalWindow-confirm-button-color: #335cff;
@@ -18,7 +18,7 @@
   --modalWindow-title-color: #fff;
   --modalWindow-description-color: #e0e4ea;
   --modalWindow-icon-wrapper-color: #525866;
-
+  --modalWindow-border-color: #525866;
   --modalWindow-cancel-button-color: #717784;
   --modalWindow-cancel-button-text-color: #e0e4ea;
   --modalWindow-confirm-button-color: #335cff;
@@ -48,7 +48,7 @@
   flex-direction: column;
   background-color: var(--modalWindow-background-color);
   border-radius: 8px;
-  border: 1px solid #e0e4ea;
+  border: 1px solid var(--modalWindow-border-color);
 }
 
 .modalWindowTopContent {
@@ -76,7 +76,7 @@
 .horizontalDivider {
   width: 100%;
   height: 1px;
-  background-color: #e0e4ea;
+  background-color: var(--modalWindow-border-color);
 }
 
 .modalWindowTextContainer {

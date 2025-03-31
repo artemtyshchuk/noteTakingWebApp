@@ -1,9 +1,5 @@
 import { SettingsButton } from "components/Buttons/SettingButton";
 import styles from "./SettingButtonsList.module.scss";
-import sunIcon from "assets/images/icon-sun.svg";
-import fontIcon from "assets/images/icon-font.svg";
-import lockIcon from "assets/images/icon-lock.svg";
-import logoutIcon from "assets/images/icon-logout.svg";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router";
@@ -30,20 +26,20 @@ export const SettingButtonsList = () => {
   return (
     <div className={styles.settingButtonsList}>
       <SettingsButton
-        icon={sunIcon}
+        sunIcon
         text="Color Theme"
         path="/settings/color-theme"
         onClick={() => navigate("/settings/color-theme")}
       />
       <SettingsButton
-        icon={fontIcon}
+        fontIcon
         text="Font Theme"
         path="/settings/font-theme"
         onClick={() => navigate("/settings/font-theme")}
       />
       {user?.passwordEnabled && (
         <SettingsButton
-          icon={lockIcon}
+          lockIcon
           text="Change Password"
           path="/settings/change-password"
           onClick={() => openUserProfile()}
@@ -53,7 +49,7 @@ export const SettingButtonsList = () => {
       <HorizontalDivider margin="8px 0" />
 
       <SettingsButton
-        icon={logoutIcon}
+        logoutIcon
         text={isSignedIn ? "Logout" : "Login"}
         onClick={handleLoginLogoutButton}
       />

@@ -1,10 +1,12 @@
 [data-theme="Light Mode"] {
+  --icon-color: #717784;
   --header-lines-color: #e0e4ea;
   --header-text-color: #0e121b;
   --header-results-text-color: #525866;
 }
 
 [data-theme="Dark Mode"] {
+  --icon-color: #99a0ae;
   --header-lines-color: #232530;
   --header-text-color: #ffffff;
   --header-results-text-color: #cacfd8;
@@ -59,8 +61,11 @@
 .searchIcon {
   width: 20px;
   height: 20px;
-  filter: invert(43%) sepia(4%) saturate(0%) hue-rotate(181deg) brightness(91%)
-    contrast(92%);
+  fill: var(--icon-color);
+}
+
+.searchField:has(.searchInput:focus) .searchIcon {
+  fill: #335cff;
 }
 
 .settingsButton {
@@ -68,13 +73,20 @@
   background-color: transparent;
 }
 
+.settingsButton:hover .settingsIcon {
+  fill: #335cff;
+}
+
 .settingsIcon {
   margin-left: 16px;
   width: 24px;
   height: 24px;
   cursor: pointer;
-  filter: invert(43%) sepia(4%) saturate(0%) hue-rotate(181deg) brightness(91%)
-    contrast(92%);
+  fill: var(--icon-color);
+}
+
+.leftSideHeaderActive .settingsIcon {
+  fill: #335cff;
 }
 
 .horizontalDivider {

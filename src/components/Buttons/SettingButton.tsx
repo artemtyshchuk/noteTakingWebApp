@@ -1,16 +1,26 @@
 import { useLocation } from "react-router";
 import styles from "./buttons.module.scss";
-import arraowIcon from "assets/images/icon-chevron-right.svg";
+import ArrowRightIcon from "assets/images/icon-chevron-right.svg?react";
+import SunIcon from "assets/images/icon-sun.svg?react";
+import FontIcon from "assets/images/icon-font.svg?react";
+import LockIcon from "assets/images/icon-lock.svg?react";
+import LogoutIcon from "assets/images/icon-logout.svg?react";
 
 interface SettingsButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   text: string;
-  icon: string;
+  sunIcon?: boolean;
+  fontIcon?: boolean;
+  lockIcon?: boolean;
+  logoutIcon?: boolean;
   path?: string;
 }
 
 export const SettingsButton = ({
   text,
-  icon,
+  sunIcon,
+  fontIcon,
+  lockIcon,
+  logoutIcon,
   path,
   onClick,
 }: SettingsButtonProps) => {
@@ -24,10 +34,13 @@ export const SettingsButton = ({
       onClick={onClick}
     >
       <div className={styles.buttonContainer}>
-        <img className={styles.icon} src={icon} alt="icon" />
+        {sunIcon && <SunIcon className={styles.strokeOrientedIcon} />}
+        {fontIcon && <FontIcon className={styles.icon} />}
+        {lockIcon && <LockIcon className={styles.strokeOrientedIcon} />}
+        {logoutIcon && <LogoutIcon className={styles.strokeOrientedIcon} />}
         <p className={styles.routeButtonText}>{text}</p>
       </div>
-      <img className={styles.arrowRight} src={arraowIcon} alt="arrow" />
+      <ArrowRightIcon className={styles.arrowRight} />
     </button>
   );
 };

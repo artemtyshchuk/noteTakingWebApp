@@ -2,8 +2,7 @@
   --theme-icon-background-color: #fff;
   --theme-title-color: #0e121b;
   --theme-description-color: #2b303b;
-  --icon-filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg)
-    brightness(0%) contrast(100%);
+  --icon-color: #2b303b;
   --button-lines-color: #f0f0f0;
 }
 
@@ -11,8 +10,7 @@
   --theme-icon-background-color: #232530;
   --theme-title-color: #fff;
   --theme-description-color: #cacfd8;
-  --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
-    brightness(100%) contrast(100%);
+  --icon-color: #fff;
   --button-lines-color: #525866;
 }
 
@@ -49,10 +47,10 @@
 .settingModeButton {
   width: 100%;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 40px 1fr 20px;
   align-items: center;
-  gap: 16px;
+  column-gap: 16px;
   border: 1px solid var(--button-lines-color);
   border-radius: 12px;
   padding: 16px;
@@ -73,10 +71,23 @@
   background-color: var(--theme-icon-background-color);
 }
 
-.themeIcon {
-  filter: var(--icon-filter);
+.themeIcon,
+.strokeOrientedThemeIcon {
   width: 24px;
   height: 24px;
+  fill: var(--icon-color);
+}
+
+.strokeOrientedThemeIcon {
+  fill: none;
+  stroke: var(--icon-color);
+}
+
+.settingModeButtonInput:checked + .themeIcon {
+  fill: #335cff;
+}
+.settingModeButtonInput:checked + .strokeOrientedThemeIcon {
+  stroke: #335cff;
 }
 
 .settingModeButtonTitle {

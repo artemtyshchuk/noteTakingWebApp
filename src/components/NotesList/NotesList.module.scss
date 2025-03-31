@@ -2,12 +2,14 @@
   --notes-title-color: #0e121b;
   --note-date-color: #2b303b;
   --note-hover-bg-color: #f3f5f8;
+  --inner-color: #525866;
 }
 
 [data-theme="Dark Mode"] {
   --notes-title-color: #fff;
   --note-date-color: #cacfd8;
   --note-hover-bg-color: #232530;
+  --inner-color: #8d97af;
 }
 
 .notesList {
@@ -193,7 +195,7 @@
   }
 
   .innerColor {
-    color: #525866;
+    color: var(--inner-color);
   }
 
   .notesListMobileHeaderDescription {

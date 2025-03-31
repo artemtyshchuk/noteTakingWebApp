@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Header.module.scss";
-import searchIcon from "assets/images/icon-search.svg";
+import SearchIcon from "assets/images/icon-search.svg?react";
 import { notesStore } from "store/notesStore";
 
 interface SearchInputProps {
@@ -33,7 +33,7 @@ export const SearchInput = ({
 
   return (
     <label className={styles.searchField}>
-      <img className={styles.searchIcon} src={searchIcon} alt="search" />
+      <SearchIcon className={styles.searchIcon} />
       <input
         className={styles.searchInput}
         type="text"

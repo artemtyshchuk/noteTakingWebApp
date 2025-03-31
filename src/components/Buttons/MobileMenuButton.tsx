@@ -2,7 +2,12 @@ import styles from "./buttons.module.scss";
 import { MenuButtonsDataTypes } from "types/types";
 import { useLocation, useNavigate } from "react-router";
 import { notesStore } from "store/notesStore";
-import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
+
+import HomeIcon from "assets/images/icon-home.svg?react";
+import SearchIcon from "assets/images/icon-search.svg?react";
+import ArchivedIcon from "assets/images/icon-archive.svg?react";
+import TagsIcon from "assets/images/icon-tag.svg?react";
+import SettingsIcon from "assets/images/icon-settings.svg?react";
 
 interface MobileMenuButtonProps extends MenuButtonsDataTypes {}
 
@@ -42,7 +47,15 @@ export const MobileMenuButton = ({
       }`}
       onClick={handleClick}
     >
-      <img className={styles.mobileMenuButtonIcon} src={icon} alt={text} />
+      {icon === "homeIcon" && <HomeIcon className={styles.icon} />}
+      {icon === "searchIcon" && <SearchIcon className={styles.icon} />}
+      {icon === "archivedIcon" && (
+        <ArchivedIcon className={styles.strokeOrientedIcon} />
+      )}
+      {icon === "tagsIcon" && (
+        <TagsIcon className={styles.strokeOrientedIcon} />
+      )}
+      {icon === "settingsIcon" && <SettingsIcon className={styles.icon} />}
       <p className={styles.mobileMenuButtonText}>{text}</p>
     </button>
   );

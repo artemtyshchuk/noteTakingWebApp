@@ -1,4 +1,3 @@
-import { HorizontalDivider } from "components/Dividers/Dividers";
 import styles from "./ModalWindow.module.scss";
 import { createPortal } from "react-dom";
 
