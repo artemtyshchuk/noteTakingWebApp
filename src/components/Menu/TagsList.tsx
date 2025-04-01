@@ -5,6 +5,7 @@ import { FixedSizeList as List } from "react-window";
 import { observer } from "mobx-react-lite";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import { useGetWindowHeight } from "hooks/useGetWindowHeight";
+import { SkeletonLoading } from "components/SkeletonLoading/SkeletonLoading";
 
 interface TagsListProps {
   withDivider?: boolean;
@@ -14,6 +15,8 @@ export const TagsList = observer(({ withDivider }: TagsListProps) => {
   const TagButton = lazy(() => import("components/Buttons/TagButton"));
   const { containerRef, containerHeight } = useGetWindowHeight();
 
+  const skeletonHeight = 40;
+  const skeletonCount = Math.ceil(containerHeight / skeletonHeight);
   const uniqTags = Array.from(
     new Set(
       [...notesStore.notes]
@@ -30,8 +33,10 @@ export const TagsList = observer(({ withDivider }: TagsListProps) => {
     <div className={styles.tagsList}>
       <Suspense
         fallback={
-          <div className={styles.tagsListContainer}>
-            <div className={styles.loading}>Loading...</div>
+          <div className={styles.tagsListSkeletonContainer}>
+            {Array.from({ length: skeletonCount }).map((_, index) => (
+              <SkeletonLoading key={index} height={40} />
+            ))}
           </div>
         }
       >

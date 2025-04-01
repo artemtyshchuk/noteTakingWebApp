@@ -3,6 +3,7 @@
   --note-date-color: #2b303b;
   --note-hover-bg-color: #f3f5f8;
   --inner-color: #525866;
+  --skeleton-loading-line-color: #4040401e;
 }
 
 [data-theme="Dark Mode"] {
@@ -10,6 +11,7 @@
   --note-date-color: #cacfd8;
   --note-hover-bg-color: #232530;
   --inner-color: #8d97af;
+  --skeleton-loading-line-color: #e0e0e01e;
 }
 
 .notesList {
@@ -116,6 +118,15 @@
 .mobileHeaderFetures {
   display: none;
 }
+
+.noteSkeletonContainer {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
 
 @media (max-width: 1439px) {
   //1201

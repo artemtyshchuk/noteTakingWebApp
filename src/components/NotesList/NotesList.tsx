@@ -9,6 +9,7 @@ import { FixedSizeList as List } from "react-window";
 import { GoBackButton } from "components/Buttons/GoBackButton";
 import { useGetWindowHeight } from "hooks/useGetWindowHeight";
 import { useClerk, useUser } from "@clerk/clerk-react";
+import { SkeletonLoading } from "components/SkeletonLoading/SkeletonLoading";
 
 const MessageForUser = lazy(() => import("./MessageForUser"));
 const Note = lazy(() => import("./Note"));
@@ -21,6 +22,9 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
   useFetchNotes();
 
   const { containerRef, containerHeight } = useGetWindowHeight();
+
+  const skeletonHeight = 88;
+  const skeletonCount = Math.ceil(containerHeight / skeletonHeight);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,7 +43,6 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
     }
 
     notesStore.setSearchNoteQuery("");
-
 
     const newNoteId = uuidv4();
     notesStore.setSelectedNote({
@@ -92,6 +95,16 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
     );
   };
 
+  const skeletonList = () => {
+    return (
+      <div className={styles.noteSkeletonContainer}>
+        {Array.from({ length: skeletonCount }).map((_, index) => (
+          <SkeletonLoading key={index} height={88} />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className={styles.notesList}>
       {!location.pathname.includes("archived") && (
@@ -103,28 +116,18 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
           <span className={styles.newNoteButtonText}>+ Create New Note</span>
         </button>
       )}
-
       {location.pathname.includes("archived") && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <MessageForUser
-            text="All your archived notes are stored here. You can restore or delete them anytime."
-            transparentBackground
-          />{" "}
-        </Suspense>
+        <MessageForUser
+          text="All your archived notes are stored here. You can restore or delete them anytime."
+          transparentBackground
+        />
       )}
-
       {location.pathname === "/archived" && isEmpty && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <MessageForUser text={messageToCreateNewNote()} />
-        </Suspense>
+        <MessageForUser text={messageToCreateNewNote()} />
       )}
-
       {location.pathname === "/" && isEmpty && (
-        <Suspense fallback={<div>Loading...</div>}>
-          <MessageForUser text="You don’t have any notes yet. Start a new note to capture your thoughts and ideas." />
-        </Suspense>
+        <MessageForUser text="You don’t have any notes yet. Start a new note to capture your thoughts and ideas." />
       )}
-
       {location.pathname === `/tags/${tagName}` && (
         <div className={styles.mobileHeaderFetures}>
           <GoBackButton />
@@ -140,7 +143,7 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
 
       <div ref={containerRef} className={styles.scrollableContainer}>
         {containerHeight > 0 && (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={skeletonList()}>
             <List
               className={styles.lazyList}
               height={containerHeight - 50}

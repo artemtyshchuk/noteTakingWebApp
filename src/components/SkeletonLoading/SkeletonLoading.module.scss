@@ -1,0 +1,42 @@
+[data-theme="Light Mode"] {
+  --skeleton-loading-bg-color: #f3f5f8;
+  --skeleton-loading-line-color: #4040401e;
+}
+
+[data-theme="Dark Mode"] {
+  --skeleton-loading-bg-color: #232530;
+  --skeleton-loading-line-color: #e0e0e01e;
+}
+
+.skeletonLoading {
+  width: 100%;
+  background-color: var(--skeleton-loading-bg-color);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 0%,
+      var(--skeleton-loading-line-color) 50%,
+      transparent 100%
+    );
+    animation: shimmer 1s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(45deg);
+  }
+}
