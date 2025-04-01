@@ -53,6 +53,14 @@ export const SettingButtonsList = () => {
         text={isSignedIn ? "Logout" : "Login"}
         onClick={handleLoginLogoutButton}
       />
+      {isSignedIn && (
+        <div className={styles.whoIsLoginContainer}>
+          <p className={styles.whoIsLoginText}>You are logged in as:</p>
+          <p className={styles.whoIsLoginEmail}>
+            {user?.emailAddresses[0].emailAddress}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
