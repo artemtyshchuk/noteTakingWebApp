@@ -1,4 +1,5 @@
 [data-theme="Light Mode"] {
+  --icon-color: #2b303b;
   --modalWindow-background-color: #fff;
   --modalWindow-title-color: #0e121b;
   --modalWindow-description-color: #2b303b;
@@ -8,12 +9,11 @@
   --modalWindow-cancel-button-text-color: #525866;
   --modalWindow-confirm-button-color: #335cff;
   --modalWindow-confirm-button-text-color: #fff;
-  --icon-filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg)
-    brightness(0%) contrast(100%);
   --button-lines-color: #f0f0f0;
 }
 
 [data-theme="Dark Mode"] {
+  --icon-color: #fff;
   --modalWindow-background-color: #2b303b;
   --modalWindow-title-color: #fff;
   --modalWindow-description-color: #e0e4ea;
@@ -23,8 +23,6 @@
   --modalWindow-cancel-button-text-color: #e0e4ea;
   --modalWindow-confirm-button-color: #335cff;
   --modalWindow-confirm-button-text-color: #fff;
-  --icon-filter: invert(100%) sepia(0%) saturate(100%) hue-rotate(0deg)
-    brightness(100%) contrast(100%);
   --button-lines-color: #525866;
 }
 
@@ -70,7 +68,8 @@
 }
 
 .modalWindowIcon {
-  filter: var(--icon-filter);
+  fill: none;
+  stroke: var(--icon-color);
 }
 
 .horizontalDivider {

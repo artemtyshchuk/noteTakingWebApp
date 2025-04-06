@@ -47,12 +47,6 @@ export class ErrorBoundary extends Component<Props, State> {
             >
               Reload Page
             </button>
-            <button
-              className={styles.detailsButton}
-              onClick={this.toggleDetails}
-            >
-              {this.state.showDetails ? "Hide Details" : "Show Details"}
-            </button>
             {this.state.showDetails && (
               <pre className={styles.errorDetails}>
                 {this.state.error?.stack}

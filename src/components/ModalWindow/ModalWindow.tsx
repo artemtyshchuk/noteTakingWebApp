@@ -1,5 +1,9 @@
 import styles from "./ModalWindow.module.scss";
+import ArchiveIcon from "assets/images/icon-archive.svg?react";
+import DeleteIcon from "assets/images/icon-delete.svg?react";
+import RestoreIcon from "assets/images/icon-restore.svg?react";
 import { createPortal } from "react-dom";
+
 
 interface ModalWindowProps {
   icon: string;
@@ -26,7 +30,9 @@ export const ModalWindow = ({
       >
         <div className={styles.modalWindowTopContent}>
           <div className={styles.modalWindowIconWrapper}>
-            <img className={styles.modalWindowIcon} src={icon} alt="title" />
+            {icon === "deleteIcon" && <DeleteIcon className={styles.modalWindowIcon} />}
+            {icon === "archiveIcon" && <ArchiveIcon className={styles.modalWindowIcon} />}
+            {icon === "restoreIcon" && <RestoreIcon className={styles.modalWindowIcon} />}
           </div>
           <div className={styles.modalWindowTextContainer}>
             <p className={styles.modalWindowTitle}>{title}</p>

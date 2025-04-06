@@ -1,8 +1,6 @@
 import { ActionButton } from "components/Buttons/ActionButton";
 import styles from "./NoteActionButtons.module.scss";
-import archiveIcon from "assets/images/icon-archive.svg";
-import deleteIcon from "assets/images/icon-delete.svg";
-import restoreIcon from "assets/images/icon-restore.svg";
+
 import { notesStore } from "store/notesStore";
 import {
   archiveNoteInFirestore,
@@ -36,7 +34,7 @@ export const NoteActionButtons = () => {
       return;
 
     openModal({
-      icon: deleteIcon,
+      icon: 'deleteIcon',
       title: "Delete Note",
       description:
         "Are you sure you want to permanently delete this note? This action cannot be undone.",
@@ -61,7 +59,7 @@ export const NoteActionButtons = () => {
       return;
 
     openModal({
-      icon: archiveIcon,
+      icon: 'archiveIcon',
       title: "Archive Note",
       description:
         "Are you sure you want to archive this note? You can find it in the Archived Notes section and restore it anytime.",
@@ -88,7 +86,7 @@ export const NoteActionButtons = () => {
       return;
 
     openModal({
-      icon: restoreIcon,
+      icon: 'restoreIcon',
       title: "Restore Note",
       description:
         "Are you sure you want to restore this note? You can find it in the Notes section.",
