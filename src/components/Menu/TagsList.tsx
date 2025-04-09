@@ -6,6 +6,8 @@ import { observer } from "mobx-react-lite";
 import { HorizontalDivider } from "components/Dividers/Dividers";
 import { useGetWindowHeight } from "hooks/useGetWindowHeight";
 import { SkeletonLoading } from "components/SkeletonLoading/SkeletonLoading";
+import { useUser } from "@clerk/clerk-react";
+import { useNotes } from "hooks/useNotes";
 
 interface TagsListProps {
   withDivider?: boolean;
@@ -15,11 +17,14 @@ export const TagsList = observer(({ withDivider }: TagsListProps) => {
   const TagButton = lazy(() => import("components/Buttons/TagButton"));
   const { containerRef, containerHeight } = useGetWindowHeight();
 
+  const { user } = useUser();
+  const { data } = useNotes(user?.id || "");
+
   const skeletonHeight = 40;
   const skeletonCount = Math.ceil(containerHeight / skeletonHeight);
   const uniqTags = Array.from(
     new Set(
-      [...notesStore.notes]
+      [...(data || [])]
         .filter((note) =>
           location.pathname.includes("archived")
             ? note.isArchived

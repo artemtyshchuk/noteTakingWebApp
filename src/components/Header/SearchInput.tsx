@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./Header.module.scss";
 import SearchIcon from "assets/images/icon-search.svg?react";
 import { notesStore } from "store/notesStore";
 
 interface SearchInputProps {
-  handleSearch: (search: string) => void;
+  handleSearch?: (searchValue: string) => void;
   initialValue?: string;
 }
 
@@ -28,7 +28,7 @@ export const SearchInput = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
-    handleSearch(event.target.value);
+    handleSearch && handleSearch(event.target.value);
   };
 
   return (

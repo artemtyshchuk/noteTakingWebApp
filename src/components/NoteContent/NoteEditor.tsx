@@ -20,6 +20,7 @@ import {
   SaveCancelDesctopButtons,
   SaveCancelMobileButtons,
 } from "./SaveCancelButtonsContainers";
+import { useNotes } from "hooks/useNotes";
 
 const dateFormat = () => format(new Date(), "dd MMM yyyy");
 
@@ -34,6 +35,7 @@ export const NoteEditor = ({}: NoteEditorProps) => {
   const mobileScreen = window.matchMedia("(max-width: 576px)").matches;
 
   const { user } = useUser();
+  const { data } = useNotes(user?.id || "");
 
   const { noteId } = useParams();
 
@@ -42,8 +44,8 @@ export const NoteEditor = ({}: NoteEditorProps) => {
   const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
 
   useEffect(() => {
-    if (noteId) {
-      const foundNote = notesStore.notes.find((n) => n.id === noteId);
+    if (noteId && data) {
+      const foundNote = data.find((n) => n.id === noteId);
 
       if (foundNote) {
         setNote(foundNote);

@@ -11,14 +11,20 @@ import { TagsPage } from "pages/TagsPage";
 import { NotesList } from "components/NotesList/NotesList";
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 import { ErrorPage } from "components/ErrorPage/ErrorPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <ThemeProvider>
-      <FontProvider>
-        <RouterProvider router={router} />
-      </FontProvider>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <FontProvider>
+          <RouterProvider router={router} />
+        </FontProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

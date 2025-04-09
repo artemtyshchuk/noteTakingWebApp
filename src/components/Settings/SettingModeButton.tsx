@@ -33,7 +33,6 @@ export const SettingModeButton = ({
   };
 
   return (
-    //onClick={handleClick}
     <label className={styles.settingModeButton}>
       <div className={styles.settingModeButtonIcon}>
         {icon === "sunIcon" && <SunIcon className={styles.strokeOrientedThemeIcon} />}

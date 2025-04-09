@@ -8,133 +8,88 @@ import {
   updateDoc,
   where,
   setDoc,
+  onSnapshot,
 } from "firebase/firestore";
-import { notesStore } from "store/notesStore";
 
 export const addNoteToFirestore = async (note: NoteTypes, userId: string) => {
-  if (!note.id) {
-    console.error("Note must have an ID");
-  }
-
-  try {
-    console.log("User ID:", userId);
-    const noteRef = doc(db, "notes", note.id);
-
-    await setDoc(noteRef, { ...note, userId }, { merge: true });
-
-    notesStore.updateNote(note.id, { ...note });
-
-    console.log("Note saved with ID:", note.id);
-  } catch (e) {
-    console.error("Error adding or updating document: ", e);
-  }
+  const noteRef = doc(db, "notes", note.id);
+  await setDoc(noteRef, { ...note, userId }, { merge: true });
+  return note;
 };
 
 export const getNotesByUserId = async (
   userId: string
 ): Promise<NoteTypes[]> => {
-  try {
-    const q = query(collection(db, "notes"), where("userId", "==", userId));
-    const querySnapshot = await getDocs(q);
+  const q = query(collection(db, "notes"), where("userId", "==", userId));
+  const querySnapshot = await getDocs(q);
 
-    const notes = querySnapshot.docs.map(
-      (doc) =>
-        ({
-          ...doc.data(),
-          firestoreId: doc.id,
-        } as NoteTypes)
-    );
-
-    return notes;
-  } catch (e) {
-    console.error("Error fetching notes: ", e);
-    throw e;
-  }
+  return querySnapshot.docs.map((doc) => ({
+    ...doc.data(),
+    firestoreId: doc.id,
+  })) as NoteTypes[];
 };
+
 
 export const deleteNoteFromFirestore = async (
   noteId: string,
   userId: string
 ) => {
-  try {
-    console.log("Attempting to delete note with ID:", noteId);
+  const noteRef = doc(db, "notes", noteId);
+  const noteSnapshot = await getDoc(noteRef);
 
-    const noteRef = doc(db, "notes", noteId);
-    const noteSnapshot = await getDoc(noteRef);
-
-    if (!noteSnapshot.exists()) {
-      console.log("Note not found with ID:", noteId);
-      throw new Error("Note not found");
-    }
-
-    const noteData = noteSnapshot.data();
-    console.log("Note data:", noteData);
-
-    if (noteData?.userId !== userId) {
-      throw new Error("You are not authorized to delete this note");
-    }
-
-    await deleteDoc(noteRef);
-    console.log("Note deleted successfully!");
-  } catch (e) {
-    console.error("Error deleting note: ", e);
+  if (!noteSnapshot.exists()) {
+    throw new Error("Note not found");
   }
+
+  const noteData = noteSnapshot.data();
+
+  if (noteData?.userId !== userId) {
+    throw new Error("You are not authorized to delete this note");
+  }
+
+  await deleteDoc(noteRef);
+  return noteId;
 };
 
 export const archiveNoteInFirestore = async (
   noteId: string,
   userId: string
 ) => {
-  try {
-    const noteRef = doc(db, "notes", noteId);
-    const noteSnapshot = await getDoc(noteRef);
+  const noteRef = doc(db, "notes", noteId);
+  const noteSnapshot = await getDoc(noteRef);
 
-    if (!noteSnapshot.exists()) {
-      console.log("Note not found with ID:", noteId);
-      console.error("Note not found");
-    }
-
-    const noteData = noteSnapshot.data();
-
-    if (noteData?.userId !== userId) {
-      console.log("Unauthorized access attempt by user:", userId);
-      console.error("You are not authorized to modify this note");
-    }
-
-    await updateDoc(noteRef, {
-      isArchived: true,
-    });
-
-    console.log(`Note ${noteId} successfully archived`);
-  } catch (error) {
-    console.error("Failed to archive note:", error);
+  if (!noteSnapshot.exists()) {
+    throw new Error("Note not found");
   }
+
+  const noteData = noteSnapshot.data();
+
+  if (noteData?.userId !== userId) {
+    throw new Error("Unauthorized access");
+  }
+
+  await updateDoc(noteRef, { isArchived: true });
+  return noteId;
 };
 
 export const restoreNoteInFirestore = async (
   noteId: string,
   userId: string
 ) => {
-  try {
-    const noteRef = doc(db, "notes", noteId);
-    const noteSnapshot = await getDoc(noteRef);
+  const noteRef = doc(db, "notes", noteId);
+  const noteSnapshot = await getDoc(noteRef);
 
-    if (!noteSnapshot.exists()) {
-      console.log("Note not found with ID:", noteId);
-      throw new Error("Note not found");
-    }
-
-    const noteData = noteSnapshot.data();
-
-    if (noteData?.userId !== userId) {
-      throw new Error("You are not authorized to modify this note");
-    }
-    await updateDoc(noteRef, {
-      isArchived: false,
-    });
-    console.log(`Note ${noteId} successfully restored`);
-  } catch (error) {
-    console.log("Failed to restore note:", error);
-    throw error;
+  if (!noteSnapshot.exists()) {
+    throw new Error("Note not found");
   }
+
+  const noteData = noteSnapshot.data();
+  if (noteData?.userId !== userId) {
+    throw new Error("Unauthorized access");
+  }
+
+  await updateDoc(noteRef, { isArchived: false });
+  return noteId;
 };
+
+

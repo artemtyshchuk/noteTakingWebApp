@@ -13,8 +13,8 @@ export const SearchPage = () => {
   const isNoteEditorOpen = location.pathname.includes("/note/");
 
   const handleSearch = (searchValue: string) => {
-    setSearch(searchValue);
     notesStore.setSearchNoteQuery(searchValue);
+    setSearch(searchValue);
   };
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const SearchPage = () => {
                   {`All notes matching "${search}" are displayed below.`}
                 </p>
                 <div className={styles.searchResultsNotesListContainer}>
-                  <NotesList isArchived={false || true} />
+                  <NotesList isArchived={false} />
                 </div>
               </>
             )}

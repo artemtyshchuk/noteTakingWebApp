@@ -8,6 +8,8 @@ import { useNavigate } from "react-router";
 import { useModal } from "hooks/useModal";
 import { ModalWindow } from "components/ModalWindow/ModalWindow";
 import { useDeselectNoteAndNavigate } from "hooks/useDeselectNoteAndNavigate";
+import { useUser } from "@clerk/clerk-react";
+import { useNotes } from "hooks/useNotes";
 
 interface NoteProps extends React.HTMLAttributes<HTMLButtonElement> {
   id: string;
@@ -21,14 +23,18 @@ const Note = observer(
   ({ noteTitle, tag, noteDate, newNote, id }: NoteProps) => {
     const navigate = useNavigate();
 
-    // console.log("render", id);
+
+    const { user } = useUser();
+    const { data } = useNotes(user?.id || "");
 
     const { closeModal, isModalOpen, openModal } = useModal();
 
     const deselectNoteAndNavigate = useDeselectNoteAndNavigate();
 
     const currentNote = notesStore.selectedNote;
-    const selectedNote = notesStore.notes.find((note) => note.id === id);
+
+    if (!data) throw new Error("No data");
+    const selectedNote = data.find((note) => note.id === id);
 
     const handleClick = () => {
       if (!selectedNote) return;

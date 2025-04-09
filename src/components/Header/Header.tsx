@@ -2,31 +2,30 @@ import styles from "./Header.module.scss";
 import SettingsIcon from "assets/images/icon-settings.svg?react";
 import { observer } from "mobx-react-lite";
 import { notesStore } from "store/notesStore";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { SearchInput } from "./SearchInput";
 
 export const Header = observer(() => {
-  const [search, setSearch] = useState<string>("");
 
   const navigate = useNavigate();
   const location = useLocation();
 
+  const searchResult = notesStore.searchNoteQuery;
+
   const clickRouteButton = () => {
     notesStore.setSelectedNote(null);
     notesStore.setSearchNoteQuery("");
-    setSearch("");
     navigate("/settings");
   };
 
   const headerTitle = () => {
-    if (search) {
+    if (searchResult) {
       return (
         <>
           <span className={styles.searchingResultsText}>
             Showing results for:{" "}
           </span>
-          {notesStore.searchNoteQuery}
+          {searchResult}
         </>
       );
     } else if (location.pathname === "/settings") {
@@ -56,7 +55,7 @@ export const Header = observer(() => {
             isActive ? styles.leftSideHeaderActive : ""
           }`}
         >
-          <SearchInput handleSearch={(search: string) => setSearch(search)} />
+          <SearchInput />
           <button className={styles.settingsButton} onClick={clickRouteButton}>
             <SettingsIcon className={styles.settingsIcon} />
           </button>

@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import styles from "./NotesList.module.scss";
 import { notesStore } from "store/notesStore";
-import { useFetchNotes } from "hooks/fetchData-hook";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import { lazy, Suspense } from "react";
@@ -10,6 +9,7 @@ import { GoBackButton } from "components/Buttons/GoBackButton";
 import { useGetWindowHeight } from "hooks/useGetWindowHeight";
 import { useClerk, useUser } from "@clerk/clerk-react";
 import { SkeletonLoading } from "components/SkeletonLoading/SkeletonLoading";
+import { useNotes } from "hooks/useNotes";
 
 const MessageForUser = lazy(() => import("./MessageForUser"));
 const Note = lazy(() => import("./Note"));
@@ -19,7 +19,8 @@ interface NotesListProps {
 }
 
 export const NotesList = observer(({ isArchived }: NotesListProps) => {
-  useFetchNotes();
+  const { user } = useUser();
+  const { data } = useNotes(user?.id || "");
 
   const { containerRef, containerHeight } = useGetWindowHeight();
 
@@ -56,7 +57,7 @@ export const NotesList = observer(({ isArchived }: NotesListProps) => {
     navigate(`/note/${newNoteId}`);
   };
 
-  const filteredNotes = [...notesStore.notes]
+  const filteredNotes = [...(data || [])]
     .sort((a, b) => {
       const dateA = new Date(a.lastEdited);
       const dateB = new Date(b.lastEdited);
